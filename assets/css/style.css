@@ -15,6 +15,7 @@
   --gutter:clamp(20px, 5vw, 92px);
   --maxw:1460px;
   --rule:1px;
+  --nav-h:clamp(58px, 6.2vw, 78px);
 
   --step:clamp(64px, 9vw, 150px);   /* vertical section rhythm */
 
@@ -47,7 +48,9 @@ body{
   line-height:1.62;
   font-weight:400;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
+  /* clip, not hidden: `overflow-x:hidden` turns <body> into a scroll
+     container, which stops position:sticky working anywhere inside it. */
+  overflow-x:clip;
 }
 
 img,video{max-width:100%;display:block}
@@ -344,22 +347,168 @@ ul{margin:0;padding:0;list-style:none}
 }
 .menu__list--inline{margin-top:clamp(28px,4vw,44px)}
 
-/* ---------- cream top trio ---------- */
-.trio{
-  max-width:var(--maxw);margin:0 auto;
-  display:grid;gap:clamp(16px,2.4vw,34px);
+/* ---------- signature sequence (cream top) ----------
+   Scroll conducts the section: one drink holds the screen, the next takes
+   over, and after the third the page releases and carries on. The track is a
+   tall block; the stage inside it is sticky. Nothing in JS touches layout
+   height, so a ScrollTrigger refresh can never park the reveals. */
+.signature{max-width:var(--maxw);margin:0 auto;position:relative}
+.signature__stage{position:relative}
+
+.sig-item{
+  display:grid;gap:clamp(22px,3.4vw,58px);
   grid-template-columns:minmax(0,1fr);
+  align-items:center;
 }
-.trio__item .frame{aspect-ratio:3/4}
-.trio__item figcaption{
-  display:flex;justify-content:space-between;gap:1em;align-items:baseline;
-  margin-top:1em;padding-top:.85em;
+.sig-item + .sig-item{margin-top:clamp(44px,6vw,84px)}   /* no-JS: a readable stack */
+
+.sig-item__text{position:relative}
+.sig-item__text > :not(.sig-item__num){position:relative;z-index:1}
+.sig-item__index{
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+  opacity:.58;margin-bottom:1.25em;
+}
+.sig-item__index span{color:var(--accent);opacity:1}
+.sig-item__name{
+  font-family:var(--font-display);font-weight:400;
+  font-size:clamp(2.1rem,4.7vw,3.9rem);line-height:1.02;letter-spacing:-.022em;
+  margin-bottom:.45em;text-wrap:balance;
+}
+.sig-item__desc{
+  font-size:clamp(.95rem,.4vw + .88rem,1.06rem);line-height:1.62;
+  opacity:.72;max-width:36ch;min-height:4.9em;
+}
+.sig-item__price{
+  margin-top:1.3em;padding-top:1.1em;
   border-top:var(--rule) solid color-mix(in srgb, currentColor 20%, transparent);
-  font-size:.86rem;letter-spacing:.02em;
+  font-family:var(--font-display);font-size:1.45rem;
+  color:var(--accent);font-variant-numeric:tabular-nums;
 }
-@media (min-width:760px){
-  .trio{grid-template-columns:repeat(3,1fr)}
-  .trio__item:nth-child(2){transform:translateY(clamp(20px,4vw,64px))}
+
+/* The drinks are cut out and flattened onto this section's own ground, so
+   they read as objects standing on the page rather than framed photographs. */
+.sig-item__media{position:relative;aspect-ratio:5/6;min-height:0}
+.sig-item__media img{
+  width:100%;height:100%;object-fit:contain;object-position:center bottom;
+}
+
+/* Ghost numeral: set behind the name, in the accent, barely there. */
+.sig-item__num{
+  position:absolute;left:-.04em;top:-.56em;z-index:0;
+  pointer-events:none;user-select:none;
+  font-family:var(--font-display);font-size:clamp(6.5rem,12vw,10.5rem);
+  line-height:.72;color:var(--accent);opacity:.13;
+}
+
+@media (max-width:899px){
+  .sig-item__media{order:-1}      /* single column: lead with the drink */
+  .sig-item__num{top:-.44em;font-size:clamp(5rem,17vw,8rem);opacity:.11}
+  /* The rail below already counts the drinks off on a phone, so the index
+     line is redundant here — and dropping it clears the ghost numeral. */
+  .signature.is-sequenced .sig-item__index{display:none}
+}
+@media (max-width:620px){
+  .sig-item{gap:14px}
+  .sig-item__media{aspect-ratio:1/1}
+  .sig-item__index{margin-bottom:.8em}
+  .sig-item__desc{min-height:4.2em}
+  .sig-item__price{margin-top:.85em;padding-top:.85em}
+}
+@media (min-width:900px){
+  .sig-item{grid-template-columns:.92fr 1.08fr}
+  .sig-item__media{aspect-ratio:auto;height:clamp(430px,62vh,640px)}
+}
+
+/* ---- sequenced: the sticky track ---- */
+.signature.is-sequenced{
+  --sig-steps:2.9;
+  height:calc(var(--sig-steps) * 100svh);
+}
+.signature.is-sequenced .signature__stage{
+  position:sticky;top:0;height:100svh;
+  display:grid;grid-template-rows:minmax(0,1fr) auto;
+  padding:calc(var(--nav-h) + clamp(6px,1.4vw,22px)) 0 clamp(16px,2.6vw,30px);
+}
+.signature.is-sequenced .signature__panels{
+  position:relative;display:grid;min-height:0;
+}
+/* One shared grid cell: the stage sizes itself to the tallest drink. */
+.signature.is-sequenced .sig-item{
+  grid-area:1 / 1;margin:0;height:100%;min-height:0;
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.signature.is-sequenced .sig-item.is-active{
+  opacity:1;visibility:visible;pointer-events:auto;
+}
+.signature.is-sequenced .sig-item__media{aspect-ratio:auto;height:100%;min-height:0}
+
+@media (max-width:899px){
+  .signature.is-sequenced{--sig-steps:2.75}
+  .signature.is-sequenced .sig-item{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr) auto;
+    align-items:stretch;align-content:center;
+  }
+  .signature.is-sequenced .sig-item__text{align-self:end}
+}
+
+.signature__foot{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  gap:16px clamp(20px,4vw,56px);margin-top:clamp(30px,4vw,54px);
+}
+.signature.is-sequenced .signature__foot{margin-top:clamp(18px,2.6vw,34px)}
+.signature__rail{display:none}
+.signature.is-enhanced .signature__rail{
+  position:relative;display:flex;flex:1 1 320px;
+  gap:clamp(16px,3.4vw,52px);
+  border-top:var(--rule) solid color-mix(in srgb, currentColor 22%, transparent);
+}
+.signature__indicator{
+  position:absolute;top:-1px;left:0;width:0;height:1px;background:var(--accent);
+}
+.sig-tab{
+  appearance:none;-webkit-appearance:none;background:none;border:0;color:inherit;
+  font-family:inherit;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  display:flex;align-items:baseline;gap:.7em;white-space:nowrap;
+  padding:1.15em 0 0;cursor:pointer;opacity:.45;
+  transition:opacity var(--t-mid) var(--ease);
+}
+.sig-tab:hover{opacity:.8}
+.sig-tab.is-active{opacity:1}
+.sig-tab__num{font-variant-numeric:tabular-nums;display:none}
+.signature__cta{
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;
+  padding-bottom:.4em;white-space:nowrap;
+  border-bottom:1px solid color-mix(in srgb, currentColor 38%, transparent);
+  transition:color var(--t-mid) var(--ease), border-color var(--t-mid) var(--ease);
+}
+.signature__cta:hover{color:var(--accent);border-bottom-color:var(--accent)}
+@media (max-width:759px){
+  .sig-tab__num{display:inline}
+  .sig-tab__label{display:none}
+  .signature.is-enhanced .signature__rail{justify-content:space-between;gap:8px}
+  .sig-tab{font-size:.74rem;letter-spacing:.14em}
+}
+/* A landscape phone is wide and short: stacking would squash the drink to a
+   thumbnail, so the stage turns side-by-side instead — the desktop shape at a
+   smaller size — and drops the ghost numeral it no longer has room for. */
+@media (max-width:899px) and (max-height:620px) and (min-width:620px){
+  .signature.is-sequenced .sig-item{
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:minmax(0,1fr);
+    gap:clamp(20px,4vw,40px);
+    align-items:center;
+  }
+  .signature.is-sequenced .sig-item__media{order:0}
+  .signature.is-sequenced .sig-item__text{align-self:center}
+  .signature.is-sequenced .sig-item__index{display:block}
+  .signature.is-sequenced .sig-item__desc{min-height:0}
+  .signature.is-sequenced .sig-item__num{display:none}
+}
+/* Narrow and short at once leaves room for the drink and its name only. */
+@media (max-width:619px) and (max-height:620px){
+  .signature.is-sequenced .sig-item__desc{display:none}
+  .signature.is-sequenced .sig-item__num{display:none}
 }
 
 /* ---------- espresso ---------- */
@@ -413,11 +562,47 @@ ul{margin:0;padding:0;list-style:none}
 }
 @media (min-width:900px){.hojicha{grid-template-columns:1fr 1fr}}
 .hojicha__plates{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.8vw,24px);align-items:start}
-.plate{overflow:hidden;background:rgba(255,255,255,.04)}
-.plate--wide{grid-column:1 / -1;aspect-ratio:16/9}
-.plate--offset{grid-column:2 / span 2;aspect-ratio:7/8}
-.plate img{width:100%;height:100%;object-fit:cover}
-@media (min-width:760px){.plate--offset{transform:translateY(clamp(-8px,-1vw,0px))}}
+.plate{position:relative;overflow:hidden;background:rgba(255,255,255,.04)}
+.plate img{width:100%;height:118%;object-fit:cover}
+
+/* The whisked bowl is the section's hero: a single wide panel, opened by a
+   shutter rather than dropped in. Everything else in the column is support. */
+.plate--hero{
+  grid-column:1 / -1;aspect-ratio:1080/692;
+  box-shadow:0 28px 70px -34px rgba(0,0,0,.75);
+}
+.plate--hero::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:46%;pointer-events:none;
+  background:linear-gradient(to top, rgba(14,10,6,.62), transparent);
+}
+.plate__rule{
+  position:absolute;left:0;top:0;right:0;height:1px;z-index:3;
+  background:var(--accent);transform:scaleX(0);transform-origin:left center;
+}
+.plate__cap{
+  position:absolute;z-index:3;
+  left:clamp(14px,2vw,26px);bottom:clamp(11px,1.6vw,20px);
+  font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
+  opacity:.8;
+}
+.plate--offset{
+  grid-column:2 / span 2;aspect-ratio:7/8;
+  margin-top:clamp(-40px,-4vw,-14px);
+  outline:var(--rule) solid color-mix(in srgb, var(--fg) 16%, transparent);
+  outline-offset:-1px;
+}
+@media (max-width:899px){
+  /* Right half, so it never runs into the caption in the hero's bottom-left. */
+  .plate--offset{grid-column:3 / span 2;margin-top:clamp(-46px,-7vw,-18px)}
+}
+/* On a phone the panel earns the full width of the screen. */
+@media (max-width:759px){
+  .plate--hero{
+    margin-inline:calc(var(--gutter) * -1);
+    aspect-ratio:5/4;
+  }
+  .plate--offset{margin-right:calc(var(--gutter) * -1)}
+}
 
 /* ---------- kitchen ---------- */
 .kitchen{
@@ -436,7 +621,12 @@ ul{margin:0;padding:0;list-style:none}
 .wide{
   max-width:1080px;margin:0 auto;overflow:hidden;
 }
-.wide > img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.wide__media{position:relative;aspect-ratio:4/3;overflow:hidden}
+.wide__poster,.wide__video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;
+}
+.wide__video{opacity:0;transition:opacity 900ms var(--ease)}
+.wide__video.is-playing{opacity:1}
 .wide figcaption{
   margin-top:1em;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;opacity:.52;
 }
@@ -451,15 +641,30 @@ ul{margin:0;padding:0;list-style:none}
   font-size:1.2rem;letter-spacing:-.01em;margin-bottom:.35em;
 }
 .amenity p{font-size:.9rem;opacity:.68;line-height:1.5}
-.room__pair{
-  max-width:var(--maxw);margin:clamp(44px,6vw,86px) auto 0;
-  display:grid;gap:clamp(14px,2vw,26px);grid-template-columns:minmax(0,1fr);
+.room__panel{
+  max-width:600px;margin:clamp(52px,7vw,100px) auto 0;
+  display:flex;flex-direction:column;align-items:center;
 }
-.room__pair .frame:first-child{aspect-ratio:8/7}
-.room__pair .frame:last-child{aspect-ratio:3/4}
-@media (min-width:860px){
-  .room__pair{grid-template-columns:1.18fr .82fr;align-items:stretch}
-  .room__pair .frame{aspect-ratio:auto;min-height:clamp(330px,42vh,520px)}
+.room__panel .frame{
+  width:100%;aspect-ratio:3/4;position:relative;
+  box-shadow:0 50px 90px -40px rgba(0,0,0,.5);
+}
+.room__panel .frame::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  border:1px solid color-mix(in srgb, var(--fg) 22%, transparent);
+}
+.room__panel__tag{
+  align-self:flex-start;margin-bottom:.9em;
+  font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;opacity:.55;
+}
+.room__panel figcaption{
+  align-self:flex-start;margin-top:1.1em;
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.6;
+}
+@media (max-width:519px){
+  .room__panel{max-width:none;margin-left:calc(var(--gutter) * -1);margin-right:calc(var(--gutter) * -1)}
+  .room__panel .frame{aspect-ratio:4/5}
+  .room__panel__tag,.room__panel figcaption{padding-left:var(--gutter)}
 }
 
 /* ---------- visit ---------- */
@@ -530,18 +735,23 @@ ul{margin:0;padding:0;list-style:none}
 html.has-motion [data-motion-text],
 html.has-motion [data-reveal],
 html.has-motion [data-reveal-group],
-html.has-motion [data-image-reveal]{visibility:hidden}
+html.has-motion [data-image-reveal],
+html.has-motion [data-cinema-reveal],
+html.has-motion [data-panel-reveal]{visibility:hidden}
 
 .motion-line-mask,.motion-word-mask{display:inline-block;overflow:hidden;vertical-align:top}
 .motion-line,.motion-word{display:inline-block;will-change:transform,opacity}
-[data-image-reveal]{overflow:hidden}
+[data-image-reveal],[data-cinema-reveal]{overflow:hidden}
+[data-cinema-reveal] img{will-change:transform,filter}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   html.has-motion [data-motion-text],
   html.has-motion [data-reveal],
   html.has-motion [data-reveal-group],
-  html.has-motion [data-image-reveal]{visibility:visible !important}
+  html.has-motion [data-image-reveal],
+  html.has-motion [data-cinema-reveal],
+  html.has-motion [data-panel-reveal]{visibility:visible !important}
   *,*::before,*::after{
     animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important;

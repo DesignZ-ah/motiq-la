@@ -58,7 +58,33 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    cleanups.push(function () { window.removeEventListener('scroll', onScroll); });
+
+    /* The sticky signature stage has to clear this bar exactly, and the bar's
+       height depends on the font that ends up loading. Publishing the measured
+       value beats guessing it in CSS. It only changes padding inside a stage
+       that is already a fixed 100svh, so the document height never moves and no
+       ScrollTrigger measurement is invalidated. */
+    var navFrame = 0;
+    function measureNav() {
+      navFrame = 0;
+      var h = Math.round(nav.getBoundingClientRect().height);
+      if (h > 0) root.style.setProperty('--nav-h', h + 'px');
+    }
+    var queueNav = function () {
+      if (navFrame) cancelAnimationFrame(navFrame);
+      navFrame = requestAnimationFrame(measureNav);
+    };
+    measureNav();
+    window.addEventListener('resize', queueNav);
+    window.addEventListener('load', measureNav);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureNav);
+
+    cleanups.push(function () {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', queueNav);
+      window.removeEventListener('load', measureNav);
+      if (navFrame) cancelAnimationFrame(navFrame);
+    });
 
     // Anchor links routed through Lenis so smooth scroll and ScrollTrigger agree.
     document.querySelectorAll('a[href^="#"]').forEach(function (link) {
@@ -147,6 +173,286 @@
   }
 
   /* ---------------------------------------------------------------------
+     ROOM VIDEO — a short, already-trimmed loop; no segment math needed
+     --------------------------------------------------------------------- */
+  function initRoomVideo() {
+    var video = document.getElementById('roomVideo');
+    if (!video) return;
+    if (reduceMotion || saveData) return;             // poster stays, job done
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.loop = true;
+    video.preload = 'auto';
+    video.src = 'video/room/room-environment.mp4';
+
+    video.addEventListener('playing', function () { video.classList.add('is-playing'); });
+
+    function attempt() {
+      var p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function () { /* autoplay refused — the poster is the design */ });
+      }
+    }
+
+    var io = null;
+    if ('IntersectionObserver' in window) {
+      io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !document.hidden) attempt();
+          else video.pause();
+        });
+      }, { threshold: 0.2 });
+      io.observe(video);
+    } else {
+      attempt();
+    }
+
+    var onVisibility = function () {
+      if (document.hidden) video.pause();
+      else if (video.getBoundingClientRect().bottom > 0) attempt();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    cleanups.push(function () {
+      document.removeEventListener('visibilitychange', onVisibility);
+      if (io) io.disconnect();
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     SIGNATURE SWITCHER — one drink on stage, the rest a keystroke away.
+     Without JS every drink is simply stacked and readable, so the rail
+     only appears once this has taken over.
+     --------------------------------------------------------------------- */
+  /* ---------------------------------------------------------------------
+     SIGNATURE SEQUENCE — scroll conducts the cream tops
+
+     The track is a tall block of ordinary page; the stage inside it is
+     sticky. Scrolling through the track moves from the first drink to the
+     second to the third, then releases and the page carries on. Layout
+     height is entirely CSS-driven, so nothing here can park a reveal by
+     changing the document after ScrollTrigger has measured it.
+     --------------------------------------------------------------------- */
+
+  // Without GSAP, or under reduced motion, the drinks are simply a stack of
+  // three articles. Strip the tab wiring so assistive technology is not told
+  // about a tablist that no longer controls anything.
+  function demoteSignature() {
+    var block = document.querySelector('[data-signature]');
+    if (!block) return;
+    var rail = block.querySelector('.signature__rail');
+    if (rail) rail.remove();
+    block.querySelectorAll('.sig-item').forEach(function (item) {
+      item.removeAttribute('role');
+      item.removeAttribute('aria-labelledby');
+      item.classList.remove('is-active');
+    });
+  }
+
+  function initSignature() {
+    var block = document.querySelector('[data-signature]');
+    if (!block) return;
+
+    if (!hasGSAP || reduceMotion) { demoteSignature(); return; }
+
+    var stage = block.querySelector('[data-sig-stage]');
+    var panels = block.querySelector('.signature__panels');
+    var items = Array.prototype.slice.call(block.querySelectorAll('.sig-item'));
+    var tabs = Array.prototype.slice.call(block.querySelectorAll('.sig-tab'));
+    var indicator = block.querySelector('.signature__indicator');
+    if (!stage || !panels || items.length < 2 || tabs.length !== items.length) {
+      demoteSignature();
+      return;
+    }
+
+    var gsap = window.gsap;
+    var ScrollTrigger = window.ScrollTrigger;
+    var count = items.length;
+    var current = 0;
+    var settleTimer = 0;
+
+    block.classList.add('is-enhanced', 'is-sequenced');
+
+    function moveIndicator(smooth) {
+      if (!indicator) return;
+      var tab = tabs[current];
+      if (smooth) {
+        gsap.to(indicator, {
+          left: tab.offsetLeft, width: tab.offsetWidth,
+          duration: 0.5, ease: 'power3.out'
+        });
+      } else {
+        gsap.killTweensOf(indicator);
+        indicator.style.left = tab.offsetLeft + 'px';
+        indicator.style.width = tab.offsetWidth + 'px';
+      }
+    }
+
+    /* -- the swap ------------------------------------------------------- */
+    function markTabs() {
+      tabs.forEach(function (tab, i) {
+        var on = i === current;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+      });
+    }
+
+    // The swap is only finished once every other panel has been stood down.
+    // GSAP runs on rAF, which a backgrounded tab freezes mid-transition, so a
+    // timer settles it too — whichever gets there first the result is the same,
+    // and running it twice is harmless.
+    function settle() {
+      clearTimeout(settleTimer);
+      items.forEach(function (item, i) {
+        if (i !== current) item.classList.remove('is-active');
+      });
+      gsap.set(items, { clearProps: 'opacity' });
+    }
+
+    function reveal(item, delay) {
+      var media = item.querySelector('.sig-item__media img');
+      var numeral = item.querySelector('.sig-item__num');
+      var text = item.querySelectorAll('.sig-item__index, .sig-item__name, .sig-item__desc, .sig-item__price');
+      var tl = gsap.timeline({ delay: delay || 0 });
+
+      if (media) {
+        tl.fromTo(media,
+          { scale: 1.12, yPercent: 4, opacity: 0.25 },
+          { scale: 1, yPercent: 0, opacity: 1, duration: 1.15, ease: 'power4.out',
+            clearProps: 'transform,opacity' }, 0);
+      }
+      if (numeral) {
+        tl.fromTo(numeral,
+          { y: 34, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, ease: 'power4.out',
+            clearProps: 'transform,opacity' }, 0.1);
+      }
+      tl.fromTo(text,
+        { y: 26, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.85, ease: 'power4.out', stagger: 0.06,
+          clearProps: 'transform,opacity' }, 0.12);
+      return tl;
+    }
+
+    function activate(next) {
+      if (next === current || next < 0 || next >= count) return;
+
+      var outgoing = items[current];
+      var incoming = items[next];
+
+      current = next;
+      markTabs();
+      moveIndicator(true);
+
+      gsap.killTweensOf(items);
+      incoming.classList.add('is-active');
+
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(settle, 1600);
+
+      gsap.to(outgoing, { opacity: 0, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo(incoming, { opacity: 0 },
+        { opacity: 1, duration: 0.55, ease: 'power2.out', onComplete: settle });
+      reveal(incoming, 0);
+    }
+
+    /* -- scroll drives the index ---------------------------------------- */
+    // While a rail press is flying the page to another slice, the drinks it
+    // passes over must not flicker past: one press is one move.
+    var jumping = 0;
+
+    function sync(progress) {
+      if (jumping) return;
+      var i = Math.floor(progress * count);
+      if (i > count - 1) i = count - 1;
+      if (i < 0) i = 0;
+      activate(i);
+    }
+
+    var seq = ScrollTrigger.create({
+      trigger: block,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: function (self) { sync(self.progress); },
+      // Every lazy image that lands below the fold fires a refresh, which moves
+      // the track's start and end without firing onUpdate. Without this the
+      // drink on stage stops matching the scroll position for the rest of the
+      // session.
+      onRefresh: function (self) { sync(self.progress); }
+    });
+
+    // The first drink gets its entrance the moment the stage arrives, so the
+    // section opens with the same move that carries every later swap.
+    var intro = ScrollTrigger.create({
+      trigger: stage,
+      start: 'top 78%',
+      once: true,
+      onEnter: function () { if (current === 0) reveal(items[0], 0); }
+    });
+
+    /* -- pressing a number is a request to see that drink --------------- */
+    function scrollToIndex(i) {
+      var travel = seq.end - seq.start;
+      if (!(travel > 0)) return;
+      var target = seq.start + travel * ((i + 0.5) / count);
+
+      clearTimeout(jumping);
+      // The timer, not the engine's callback, is what releases the lock: if the
+      // person grabs the page mid-flight the callback may never run.
+      jumping = setTimeout(function () { jumping = 0; }, 1100);
+
+      if (lenis) lenis.scrollTo(target, { duration: 0.9 });
+      else window.scrollTo(0, target);
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { activate(i); scrollToIndex(i); });
+      tab.addEventListener('keydown', function (e) {
+        var last = count - 1;
+        var next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = i === last ? 0 : i + 1;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = i === 0 ? last : i - 1;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = last;
+        if (next === null) return;
+        e.preventDefault();
+        tabs[next].focus();
+        activate(next);
+        scrollToIndex(next);
+      });
+    });
+
+    /* -- measurement ----------------------------------------------------- */
+    var pending = 0;
+    var measure = function () { moveIndicator(false); };
+    var onResize = function () {
+      if (pending) cancelAnimationFrame(pending);
+      pending = requestAnimationFrame(measure);
+    };
+    window.addEventListener('resize', onResize);
+
+    measure();
+    window.addEventListener('load', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+
+    cleanups.push(function () {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('load', measure);
+      clearTimeout(settleTimer);
+      clearTimeout(jumping);
+      if (pending) cancelAnimationFrame(pending);
+      seq.kill();
+      intro.kill();
+    });
+  }
+
+  /* ---------------------------------------------------------------------
      TEXT SPLITTING — decorative copies only, accessible name preserved
      --------------------------------------------------------------------- */
   function splitWords(el) {
@@ -193,6 +499,10 @@
     var gsap = window.gsap;
     var ScrollTrigger = window.ScrollTrigger;
 
+    // Nothing is hidden until the code that reveals it is definitely running.
+    // Under reduced motion nothing is hidden at all, so nothing can get stuck.
+    if (!reduceMotion) root.classList.add('has-motion');
+
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ ease: 'power3.out', duration: 0.85 });
 
@@ -204,6 +514,8 @@
       gsap.ticker.lagSmoothing(0);
       cleanups.push(function () { if (lenis) { lenis.destroy(); lenis = null; } });
     }
+
+    initSignature();
 
     /* -- ground colour follows the photography -- */
     var themed = gsap.utils.toArray('[data-theme]');
@@ -244,9 +556,29 @@
     if (themed.length) applyTheme(themed[0]);
 
     if (reduceMotion) {
-      gsap.set('[data-motion-text],[data-reveal],[data-reveal-group],[data-image-reveal]', { autoAlpha: 1, clearProps: 'visibility,opacity' });
+      gsap.set('[data-motion-text],[data-reveal],[data-reveal-group],[data-image-reveal],[data-cinema-reveal],[data-panel-reveal]', { autoAlpha: 1, clearProps: 'visibility,opacity' });
       ScrollTrigger.refresh();
       return;
+    }
+
+    /* A finished reveal has to become permanent. ScrollTrigger.refresh() — which
+       fires every time one of the lazy images below the fold lands — reverts the
+       animations it knows about to their start values in order to measure, and a
+       `once` trigger has already killed itself by then, so nothing is left to
+       play them forwards again. Jumping to a section via the nav would leave its
+       heading and copy sitting at opacity 0. Clearing the inline state and then
+       dropping the tween means a later refresh has nothing to revert.
+       The cleanup waits a frame: killing an animation inside its own
+       ScrollTrigger callback throws inside ScrollTrigger and takes every other
+       trigger on the page down with it. */
+    function retire(anim, targets) {
+      anim.eventCallback('onComplete', function () {
+        requestAnimationFrame(function () {
+          gsap.set(targets, { clearProps: 'transform,opacity' });
+          anim.kill();
+        });
+      });
+      return anim;
     }
 
     /* -- hero intro: media, then lines, then copy, then actions -- */
@@ -271,7 +603,8 @@
     gsap.utils.toArray('[data-motion-text="words"]').forEach(function (el) {
       splitWords(el);
       gsap.set(el, { autoAlpha: 1 });
-      gsap.fromTo(el.querySelectorAll('.motion-word'),
+      var words = el.querySelectorAll('.motion-word');
+      retire(gsap.fromTo(words,
         { yPercent: 112, opacity: 0 },
         {
           yPercent: 0,
@@ -280,7 +613,7 @@
           ease: 'power4.out',
           stagger: 0.045,
           scrollTrigger: { trigger: el, start: 'top 84%', once: true }
-        });
+        }), words);
     });
 
     gsap.utils.toArray('[data-motion-text="lines"]').forEach(function (el) {
@@ -288,7 +621,7 @@
       var lines = prepareLines(el);
       gsap.set(el, { autoAlpha: 1 });
       if (!lines.length) return;
-      gsap.fromTo(lines,
+      retire(gsap.fromTo(lines,
         { yPercent: 108, opacity: 0 },
         {
           yPercent: 0,
@@ -297,7 +630,7 @@
           ease: 'power4.out',
           stagger: 0.1,
           scrollTrigger: { trigger: el, start: 'top 84%', once: true }
-        });
+        }), lines);
     });
 
     /* -- grouped reveals --
@@ -307,7 +640,7 @@
       var items = group.querySelectorAll('[data-reveal-item]');
       gsap.set(group, { autoAlpha: 1 });
       if (!items.length) return;
-      gsap.fromTo(items,
+      retire(gsap.fromTo(items,
         { y: 30, opacity: 0 },
         {
           y: 0,
@@ -315,15 +648,14 @@
           duration: 0.9,
           ease: 'power4.out',
           stagger: 0.06,
-          clearProps: 'opacity',
           scrollTrigger: { trigger: group, start: 'top 84%', once: true }
-        });
+        }), items);
     });
 
     /* -- single reveals -- */
     gsap.utils.toArray('[data-reveal]').forEach(function (el) {
       gsap.set(el, { autoAlpha: 1 });
-      gsap.fromTo(el,
+      retire(gsap.fromTo(el,
         { y: 26, opacity: 0 },
         {
           y: 0,
@@ -331,9 +663,8 @@
           duration: 0.9,
           ease: 'power4.out',
           delay: Number(el.dataset.revealDelay || 0),
-          clearProps: 'opacity',
           scrollTrigger: { trigger: el, start: 'top 86%', once: true }
-        });
+        }), el);
     });
 
     /* -- image reveals: the frame opens, the picture settles -- */
@@ -347,8 +678,69 @@
       if (img) {
         tl.fromTo(img,
           { scale: 1.07, opacity: 0.75 },
-          { scale: 1, opacity: 1, duration: 1.2, ease: 'power4.out', clearProps: 'opacity' }, 0);
+          { scale: 1, opacity: 1, duration: 1.2, ease: 'power4.out' }, 0);
       }
+      retire(tl, img ? [figure, img] : [figure]);
+    });
+
+    /* -- cinematic reveals: the signature stage and the hojicha plates get
+       a slower focus-pull open instead of the standard clip wipe -- */
+    gsap.utils.toArray('[data-cinema-reveal]').forEach(function (figure) {
+      var img = figure.querySelector('img');
+      var delay = Number(figure.dataset.revealDelay || 0);
+      gsap.set(figure, { autoAlpha: 1 });
+      var tl = gsap.timeline({
+        delay: delay,
+        scrollTrigger: { trigger: figure, start: 'top 85%', once: true }
+      });
+      tl.fromTo(figure,
+        { clipPath: 'inset(15% 15% 15% 15%)' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out', clearProps: 'clipPath' }, 0);
+      if (img) {
+        tl.fromTo(img,
+          { scale: 1.24, autoAlpha: 0, filter: 'blur(16px)' },
+          { scale: 1.07, autoAlpha: 1, filter: 'blur(0px)', duration: 1.35, ease: 'power4.out', clearProps: 'filter' }, 0.05)
+          .to(img, { scale: 1, duration: 1, ease: 'power2.out' }, 1.05);
+      }
+      retire(tl, img ? [figure, img] : [figure]);
+    });
+
+    /* -- hero panel: an accent rule draws, then a shutter opens from the
+          horizon line and the photograph settles out of its own scale -- */
+    gsap.utils.toArray('[data-panel-reveal]').forEach(function (figure) {
+      var img = figure.querySelector('img');
+      var rule = figure.querySelector('.plate__rule');
+      var cap = figure.querySelector('.plate__cap');
+      gsap.set(figure, { autoAlpha: 1 });
+
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: figure, start: 'top 84%', once: true }
+      });
+
+      if (rule) {
+        tl.fromTo(rule,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.9, ease: 'expo.out', clearProps: 'transform' }, 0);
+      }
+      tl.fromTo(figure,
+        { clipPath: 'inset(50% 0% 50% 0%)' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.45, ease: 'expo.out', clearProps: 'clipPath' }, 0.18);
+      if (img) {
+        tl.fromTo(img,
+          { scale: 1.3, filter: 'blur(14px)' },
+          { scale: 1.06, filter: 'blur(0px)', duration: 1.9, ease: 'power4.out', clearProps: 'filter' }, 0.18)
+          .to(img, { scale: 1, duration: 1.1, ease: 'power2.out' }, 1.5);
+      }
+      if (cap) {
+        tl.fromTo(cap,
+          { y: 14, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out', clearProps: 'transform' }, 0.95);
+      }
+
+      var targets = [figure];
+      if (img) targets.push(img);
+      if (cap) targets.push(cap);
+      retire(tl, targets);
     });
 
     /* -- restrained parallax inside a few frames only -- */
@@ -388,14 +780,16 @@
   function boot() {
     initNav();
     initHeroVideo();
+    initRoomVideo();
 
-    if (hasGSAP) {
-      // has-motion is what hides elements before their reveal, so it is only
-      // ever applied when we are actually going to animate them. Under reduced
-      // motion nothing is hidden in the first place, so nothing can get stuck.
-      if (!reduceMotion) root.classList.add('has-motion');
-      requestAnimationFrame(initMotion);
-    }
+    // The signature sequence needs ScrollTrigger and Lenis, so it is built
+    // inside initMotion. Without GSAP it never enhances at all.
+    if (!hasGSAP) demoteSignature();
+
+    // has-motion is applied inside initMotion, not here: rAF never fires in a
+    // background tab, so a page opened in one would sit hiding its own content
+    // with nothing scheduled to reveal it.
+    if (hasGSAP) requestAnimationFrame(initMotion);
   }
 
   if (document.readyState === 'loading') {
@@ -408,8 +802,13 @@
   var onPrefChange = function () { window.location.reload(); };
   if (motionQuery.addEventListener) motionQuery.addEventListener('change', onPrefChange);
 
-  window.addEventListener('pagehide', function () {
-    cleanups.forEach(function (fn) { try { fn(); } catch (e) { /* no-op */ } });
+  // Only tear down when the page is genuinely being discarded. A pagehide with
+  // persisted=true means the browser is keeping this page alive in the back/
+  // forward cache — running the teardown there restores it dead: no smooth
+  // scroll, no reveals left visible, and both videos stripped of their source.
+  window.addEventListener('pagehide', function (e) {
+    if (e.persisted) return;
+    cleanups.forEach(function (fn) { try { fn(); } catch (err) { /* no-op */ } });
     cleanups.length = 0;
   });
 })();

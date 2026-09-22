@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609171624">
+<link rel="stylesheet" href="assets/css/style.css?v=202609221710">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -163,6 +163,7 @@
 
   <!-- ============ CREAM TOP ============ -->
   <section class="chapter chapter--dark" id="creamtop" data-theme data-bg="#2C2A23" data-fg="#EDE8DA" data-accent="#C98A1E" style="--bg:#2C2A23;--fg:#EDE8DA;--accent:#C98A1E" data-nav="light">
+
     <header class="chapter__head chapter__head--split">
       <div>
         <p class="eyebrow" data-reveal="fade-up">02 &mdash; The signature</p>
@@ -171,50 +172,86 @@
       <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.1">A layer of silky cream set over espresso or matcha, dusted and left to melt down through the glass. It is the house idea, and one of the drinks carries the house name.</p>
     </header>
 
-    <div class="trio" data-reveal-group>
-      <figure class="trio__item" data-reveal-item>
-        <div class="frame" data-image-reveal>
-          <img src="images/creamtop/creamtop-cocoa-orange-zest-marble-1000.jpg"
-               srcset="images/creamtop/creamtop-cocoa-orange-zest-marble-600.jpg 600w, images/creamtop/creamtop-cocoa-orange-zest-marble-1000.jpg 1000w"
-               sizes="(max-width: 860px) 86vw, 30vw"
-               alt="A cream-topped iced americano dusted with cocoa and orange zest on dark marble." loading="lazy" decoding="async" width="3072" height="4096">
+    <div class="signature" data-signature>
+      <div class="signature__stage" data-sig-stage>
+
+        <div class="signature__panels">
+
+          <article class="sig-item is-active" id="sigPanel1" role="tabpanel" aria-labelledby="sigTab1">
+            <div class="sig-item__text">
+              <span class="sig-item__num" aria-hidden="true">01</span>
+              <p class="sig-item__index"><span>01</span> &mdash; 03</p>
+              <h3 class="sig-item__name">Motiq Cream Top</h3>
+              <p class="sig-item__desc">A smooth vanilla bean latte finished with our signature cream top. 12oz, iced only.</p>
+              <p class="sig-item__price">$6.75</p>
+            </div>
+            <figure class="sig-item__media">
+              <img src="images/creamtop/signature-motiq-cream-top-820.jpg"
+                   srcset="images/creamtop/signature-motiq-cream-top-540.jpg 540w, images/creamtop/signature-motiq-cream-top-820.jpg 820w, images/creamtop/signature-motiq-cream-top-1100.jpg 1100w"
+                   sizes="(max-width: 899px) 68vw, 34vw"
+                   alt="The Motiq Cream Top: a vanilla bean latte under a thick white cream lid, finished with a mound of dark powder." loading="lazy" decoding="async" width="820" height="984">
+            </figure>
+          </article>
+
+          <article class="sig-item" id="sigPanel2" role="tabpanel" aria-labelledby="sigTab2">
+            <div class="sig-item__text">
+              <span class="sig-item__num" aria-hidden="true">02</span>
+              <p class="sig-item__index"><span>02</span> &mdash; 03</p>
+              <h3 class="sig-item__name">Orange Zest Cream Top</h3>
+              <p class="sig-item__desc">Iced americano with a silky white cream top, orange zest and cocoa powder. The cream melts into a velvety finish. Iced only.</p>
+              <p class="sig-item__price">$6.50</p>
+            </div>
+            <figure class="sig-item__media">
+              <img src="images/creamtop/signature-orange-zest-820.jpg"
+                   srcset="images/creamtop/signature-orange-zest-540.jpg 540w, images/creamtop/signature-orange-zest-820.jpg 820w, images/creamtop/signature-orange-zest-1100.jpg 1100w"
+                   sizes="(max-width: 899px) 68vw, 34vw"
+                   alt="The Orange Zest Cream Top: dark iced americano beneath a white cream lid, dusted with cocoa and orange zest." loading="lazy" decoding="async" width="820" height="984">
+            </figure>
+          </article>
+
+          <article class="sig-item" id="sigPanel3" role="tabpanel" aria-labelledby="sigTab3">
+            <div class="sig-item__text">
+              <span class="sig-item__num" aria-hidden="true">03</span>
+              <p class="sig-item__index"><span>03</span> &mdash; 03</p>
+              <h3 class="sig-item__name">Misugaru Latte</h3>
+              <p class="sig-item__desc">Multi-grain mix with double espresso, topped with white cream and finished with a sprinkle of sesame powder. Iced only.</p>
+              <p class="sig-item__price">$7.00</p>
+            </div>
+            <figure class="sig-item__media">
+              <img src="images/creamtop/signature-misugaru-820.jpg"
+                   srcset="images/creamtop/signature-misugaru-540.jpg 540w, images/creamtop/signature-misugaru-820.jpg 820w, images/creamtop/signature-misugaru-1100.jpg 1100w"
+                   sizes="(max-width: 899px) 68vw, 34vw"
+                   alt="The Misugaru Latte: grain and espresso in layers under a white cream lid, finished with a line of roasted grain powder." loading="lazy" decoding="async" width="820" height="984">
+            </figure>
+          </article>
+
         </div>
-        <figcaption><span>Orange Zest Cream Top</span><span class="menu__price">$6.50</span></figcaption>
-      </figure>
-      <figure class="trio__item" data-reveal-item>
-        <div class="frame" data-image-reveal>
-          <img src="images/creamtop/creamtop-grain-powder-marble-1000.jpg"
-               srcset="images/creamtop/creamtop-grain-powder-marble-600.jpg 600w, images/creamtop/creamtop-grain-powder-marble-1000.jpg 1000w"
-               sizes="(max-width: 860px) 86vw, 30vw"
-               alt="A layered cream-top drink finished with a line of roasted grain powder." loading="lazy" decoding="async" width="3072" height="4096">
+
+        <div class="signature__foot">
+          <div class="signature__rail" role="tablist" aria-label="Signature drinks">
+            <span class="signature__indicator" aria-hidden="true"></span>
+            <button class="sig-tab is-active" id="sigTab1" type="button" role="tab" aria-selected="true" aria-controls="sigPanel1" tabindex="0">
+              <span class="sig-tab__num" aria-hidden="true">01</span>
+              <span class="sig-tab__label">Motiq Cream Top</span>
+            </button>
+            <button class="sig-tab" id="sigTab2" type="button" role="tab" aria-selected="false" aria-controls="sigPanel2" tabindex="-1">
+              <span class="sig-tab__num" aria-hidden="true">02</span>
+              <span class="sig-tab__label">Orange Zest Cream Top</span>
+            </button>
+            <button class="sig-tab" id="sigTab3" type="button" role="tab" aria-selected="false" aria-controls="sigPanel3" tabindex="-1">
+              <span class="sig-tab__num" aria-hidden="true">03</span>
+              <span class="sig-tab__label">Misugaru Latte</span>
+            </button>
+          </div>
+          <a class="signature__cta" href="https://cash.app/order/$motiqlosangeles" target="_blank" rel="noopener">Order online <span aria-hidden="true">&#8599;</span></a>
         </div>
-        <figcaption><span>Misugaru Latte</span><span class="menu__price">$7.00</span></figcaption>
-      </figure>
-      <figure class="trio__item" data-reveal-item>
-        <div class="frame" data-image-reveal>
-          <img src="images/creamtop/creamtop-dark-powder-teal-chair-1000.jpg"
-               srcset="images/creamtop/creamtop-dark-powder-teal-chair-600.jpg 600w, images/creamtop/creamtop-dark-powder-teal-chair-1000.jpg 1000w"
-               sizes="(max-width: 860px) 86vw, 30vw"
-               alt="A cream-topped drink with a mound of dark powder, a teal velvet chair out of focus behind it." loading="lazy" decoding="async" width="3024" height="4032">
-        </div>
-        <figcaption><span>Motiq Cream Top</span><span class="menu__price">$6.75</span></figcaption>
-      </figure>
+
+      </div>
     </div>
 
     <div class="menu menu--tight" data-reveal-group>
+      <p class="menu__cat">Also from the signature list</p>
       <ul class="menu__list">
-        <li class="menu__item" data-reveal-item>
-          <div class="menu__row"><h3>Motiq Cream Top</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div>
-          <p>A smooth vanilla bean latte finished with our signature cream top. 12oz, iced only.</p>
-        </li>
-        <li class="menu__item" data-reveal-item>
-          <div class="menu__row"><h3>Orange Zest Cream Top</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.50</span></div>
-          <p>Iced americano with a silky white cream top, orange zest and cocoa powder. The cream melts into a velvety finish. Iced only.</p>
-        </li>
-        <li class="menu__item" data-reveal-item>
-          <div class="menu__row"><h3>Misugaru Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.00</span></div>
-          <p>Multi-grain mix with double espresso, topped with white cream and finished with a sprinkle of sesame powder. Iced only.</p>
-        </li>
         <li class="menu__item" data-reveal-item>
           <div class="menu__row"><h3>Koi Matcha Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.00</span></div>
           <p>Rich matcha sweetened with agave, made with oat milk, frothed smooth and finished with a touch of salt. 12oz, iced only.</p>
@@ -226,6 +263,7 @@
       </ul>
     </div>
   </section>
+
 
   <!-- ============ ESPRESSO ============ -->
   <section class="chapter chapter--black" id="espresso" data-theme data-bg="#1A130D" data-fg="#F0E7DA" data-accent="#D98A2A" style="--bg:#1A130D;--fg:#F0E7DA;--accent:#D98A2A" data-nav="light">
@@ -313,17 +351,19 @@
         </ul>
       </div>
       <div class="hojicha__plates">
-        <figure class="plate plate--wide" data-image-reveal>
-          <img src="images/hojicha/hojicha-whisk-bowl-1000.jpg"
-               srcset="images/hojicha/hojicha-whisk-bowl-600.jpg 600w, images/hojicha/hojicha-whisk-bowl-1000.jpg 1000w"
+        <figure class="plate plate--hero" data-panel-reveal data-parallax-section>
+          <span class="plate__rule" aria-hidden="true"></span>
+          <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
+               srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
                sizes="(max-width: 899px) 100vw, 46vw"
-               alt="Hojicha whisked to a fine foam in a ceramic bowl, the tips of a bamboo chasen still in the cup." loading="lazy" decoding="async" width="1040" height="620">
+               alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692" data-parallax-image>
+          <figcaption class="plate__cap">Whisked to a fine, velvety foam</figcaption>
         </figure>
-        <figure class="plate plate--offset" data-image-reveal>
+        <figure class="plate plate--offset" data-cinema-reveal data-parallax-section data-reveal-delay="0.12">
           <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
                srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
                sizes="(max-width: 899px) 60vw, 26vw"
-               alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640">
+               alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640" data-parallax-image>
         </figure>
       </div>
     </div>
@@ -402,12 +442,15 @@
       <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.1">Floor&#8209;to&#8209;ceiling glass over Olympic, a covered patio with fans, free Wi&#8209;Fi and a kitchen that is still open at nine at night.</p>
     </header>
 
-    <figure class="wide" data-image-reveal data-parallax-section>
-      <img src="video/posters/poster-room-daylight-full-crop-1000.jpg"
-           srcset="video/posters/poster-room-daylight-full-crop-600.jpg 600w, video/posters/poster-room-daylight-full-crop-1000.jpg 1000w"
-           sizes="(max-width: 1100px) 100vw, 1060px"
-           alt="The Motiq dining room in daylight: high ceilings, ring pendant lights, concrete columns and a room full of people at tables." loading="lazy" decoding="async" width="820" height="718" data-parallax-image>
-      <figcaption>Upstairs at M&nbsp;Plaza, mid&#8209;afternoon.</figcaption>
+    <figure class="wide wide--video" data-image-reveal>
+      <div class="wide__media">
+        <img class="wide__poster" src="video/posters/poster-room-environment-1000.jpg"
+             srcset="video/posters/poster-room-environment-600.jpg 600w, video/posters/poster-room-environment-1000.jpg 1000w"
+             sizes="(max-width: 1100px) 100vw, 1060px"
+             alt="The Motiq dining room in daylight: high ceilings, ring pendant lights, concrete columns and a room full of people at tables." loading="lazy" decoding="async" width="820" height="718">
+        <video class="wide__video" id="roomVideo" muted playsinline loop preload="none" aria-hidden="true" tabindex="-1"></video>
+      </div>
+      <figcaption>Upstairs at M&nbsp;Plaza &mdash; the storefront, the room, the bar.</figcaption>
     </figure>
 
     <div class="amenities" data-reveal-group>
@@ -419,19 +462,15 @@
       <div class="amenity" data-reveal-item><h3>Health score A</h3><p>Current Los Angeles County grade.</p></div>
     </div>
 
-    <div class="room__pair">
-      <figure class="frame" data-image-reveal>
-        <img src="video/posters/poster-counter-handoff-crop-1000.jpg"
-             srcset="video/posters/poster-counter-handoff-crop-600.jpg 600w, video/posters/poster-counter-handoff-crop-1000.jpg 1000w"
-             sizes="(max-width: 860px) 100vw, 46vw"
-             alt="A barista sets two matcha drinks on the counter for a waiting customer." loading="lazy" decoding="async" width="820" height="718">
-      </figure>
+    <div class="room__panel">
+      <p class="room__panel__tag">The bar, after dark</p>
       <figure class="frame" data-image-reveal>
         <img src="images/interior/interior-counter-barista-evening-1000.jpg"
              srcset="images/interior/interior-counter-barista-evening-600.jpg 600w, images/interior/interior-counter-barista-evening-1000.jpg 1000w"
-             sizes="(max-width: 860px) 100vw, 46vw"
+             sizes="(max-width: 519px) 100vw, 600px"
              alt="The counter in the evening, warm light over the fluted timber bar and pastry cases." loading="lazy" decoding="async" width="1207" height="1609">
       </figure>
+      <figcaption>Still pulling shots at nine.</figcaption>
     </div>
   </section>
 
@@ -554,6 +593,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609171624" defer></script>
+<script src="assets/js/main.js?v=202609221710" defer></script>
 </body>
 </html>
