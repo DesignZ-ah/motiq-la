@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609231930">
+<link rel="stylesheet" href="assets/css/style.css?v=202609240115">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -177,15 +177,15 @@
 
         <div class="seq__panels">
 
-          <article class="seq__item sig-item is-active" id="sigPanel1" role="tabpanel" aria-labelledby="sigTab1">
-            <div class="seq__text sig-item__text">
-              <span class="sig-item__num" aria-hidden="true">01</span>
-              <p class="sig-item__index"><span>01</span> &mdash; 03</p>
-              <h3 class="sig-item__name">Motiq Cream Top</h3>
-              <p class="sig-item__desc">A smooth vanilla bean latte finished with our signature cream top. 12oz, iced only.</p>
-              <p class="sig-item__price">$6.75</p>
+          <article class="seq__item plate is-active" id="sigPanel1" role="tabpanel" aria-labelledby="sigTab1">
+            <div class="seq__text plate__text">
+              <span class="plate__num" aria-hidden="true">01</span>
+              <p class="plate__index"><span>01</span> &mdash; 03</p>
+              <h3 class="plate__name">Motiq Cream Top</h3>
+              <p class="plate__desc">A smooth vanilla bean latte finished with our signature cream top. 12oz, iced only.</p>
+              <p class="plate__price">$6.75</p>
             </div>
-            <figure class="seq__media sig-item__media">
+            <figure class="seq__media plate__media">
               <img src="images/creamtop/signature-motiq-cream-top-820.jpg"
                    srcset="images/creamtop/signature-motiq-cream-top-540.jpg 540w, images/creamtop/signature-motiq-cream-top-820.jpg 820w, images/creamtop/signature-motiq-cream-top-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -193,15 +193,15 @@
             </figure>
           </article>
 
-          <article class="seq__item sig-item" id="sigPanel2" role="tabpanel" aria-labelledby="sigTab2">
-            <div class="seq__text sig-item__text">
-              <span class="sig-item__num" aria-hidden="true">02</span>
-              <p class="sig-item__index"><span>02</span> &mdash; 03</p>
-              <h3 class="sig-item__name">Orange Zest Cream Top</h3>
-              <p class="sig-item__desc">Iced americano with a silky white cream top, orange zest and cocoa powder. The cream melts into a velvety finish. Iced only.</p>
-              <p class="sig-item__price">$6.50</p>
+          <article class="seq__item plate" id="sigPanel2" role="tabpanel" aria-labelledby="sigTab2">
+            <div class="seq__text plate__text">
+              <span class="plate__num" aria-hidden="true">02</span>
+              <p class="plate__index"><span>02</span> &mdash; 03</p>
+              <h3 class="plate__name">Orange Zest Cream Top</h3>
+              <p class="plate__desc">Iced americano with a silky white cream top, orange zest and cocoa powder. The cream melts into a velvety finish. Iced only.</p>
+              <p class="plate__price">$6.50</p>
             </div>
-            <figure class="seq__media sig-item__media">
+            <figure class="seq__media plate__media">
               <img src="images/creamtop/signature-orange-zest-820.jpg"
                    srcset="images/creamtop/signature-orange-zest-540.jpg 540w, images/creamtop/signature-orange-zest-820.jpg 820w, images/creamtop/signature-orange-zest-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -209,15 +209,15 @@
             </figure>
           </article>
 
-          <article class="seq__item sig-item" id="sigPanel3" role="tabpanel" aria-labelledby="sigTab3">
-            <div class="seq__text sig-item__text">
-              <span class="sig-item__num" aria-hidden="true">03</span>
-              <p class="sig-item__index"><span>03</span> &mdash; 03</p>
-              <h3 class="sig-item__name">Misugaru Latte</h3>
-              <p class="sig-item__desc">Multi-grain mix with double espresso, topped with white cream and finished with a sprinkle of sesame powder. Iced only.</p>
-              <p class="sig-item__price">$7.00</p>
+          <article class="seq__item plate" id="sigPanel3" role="tabpanel" aria-labelledby="sigTab3">
+            <div class="seq__text plate__text">
+              <span class="plate__num" aria-hidden="true">03</span>
+              <p class="plate__index"><span>03</span> &mdash; 03</p>
+              <h3 class="plate__name">Misugaru Latte</h3>
+              <p class="plate__desc">Multi-grain mix with double espresso, topped with white cream and finished with a sprinkle of sesame powder. Iced only.</p>
+              <p class="plate__price">$7.00</p>
             </div>
-            <figure class="seq__media sig-item__media">
+            <figure class="seq__media plate__media">
               <img src="images/creamtop/signature-misugaru-820.jpg"
                    srcset="images/creamtop/signature-misugaru-540.jpg 540w, images/creamtop/signature-misugaru-820.jpg 820w, images/creamtop/signature-misugaru-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -439,46 +439,87 @@
 
     <div class="kitchen">
 
+      <!-- ---- brunch: a sticky track, one plate at a time ---- -->
       <div class="course">
-        <p class="menu__cat">Brunch</p>
+        <div class="seq seq--kitchen" data-sequence data-seq-reveal="crossfade">
+          <div class="seq__stage">
+            <p class="menu__cat seq__label">Brunch</p>
 
-        <ul class="dishes" data-soft-reveal data-soft-scale="0.985">
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-breakfast-burrito-780.jpg"
-                   srcset="images/food/dish-breakfast-burrito-520.jpg 520w, images/food/dish-breakfast-burrito-780.jpg 780w, images/food/dish-breakfast-burrito-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Breakfast burrito cut in half on a rimmed plate, showing scrambled egg, bacon and avocado, with salsa, pickles and tortilla chips alongside."
-                   loading="lazy" decoding="async" width="780" height="494">
-            </figure>
-            <div class="menu__row"><h3>Breakfast Burrito</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div>
-            <p class="dish__desc">House&#8209;made flour tortilla filled with crispy bacon, pasture&#8209;raised eggs, golden hash browns, creamy avocado and melted cheddar.</p>
-          </li>
+            <div class="seq__panels">
 
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-avocado-toast-780.jpg"
-                   srcset="images/food/dish-avocado-toast-520.jpg 520w, images/food/dish-avocado-toast-780.jpg 780w, images/food/dish-avocado-toast-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Avocado toast on a rimmed plate: mashed avocado over dark rye under a sunny side egg, with cherry tomatoes and microgreens."
-                   loading="lazy" decoding="async" width="780" height="463">
-            </figure>
-            <div class="menu__row"><h3>Avocado Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div>
-            <p class="dish__desc">Creamy mashed avocado with fresh herbs, tomatoes and radish on toasted rosemary bread with a sunny side egg.</p>
-          </li>
+              <article class="seq__item plate plate--dish is-active" id="brunchPanel1" role="tabpanel" aria-labelledby="brunchTab1">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">01</span>
+                  <p class="plate__index"><span>01</span> &mdash; 03</p>
+                  <h3 class="plate__name">Breakfast Burrito</h3>
+                  <p class="plate__desc">House&#8209;made flour tortilla filled with crispy bacon, pasture&#8209;raised eggs, golden hash browns, creamy avocado and melted cheddar.</p>
+                  <p class="plate__price">$15.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-breakfast-burrito-780.jpg"
+                       srcset="images/food/dish-breakfast-burrito-520.jpg 520w, images/food/dish-breakfast-burrito-780.jpg 780w, images/food/dish-breakfast-burrito-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Breakfast burrito cut in half on a rimmed plate, showing scrambled egg, bacon and avocado, with salsa, pickles and tortilla chips alongside."
+                       loading="lazy" decoding="async" width="780" height="494">
+                </figure>
+              </article>
 
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-burrata-prosciutto-780.jpg"
-                   srcset="images/food/dish-burrata-prosciutto-520.jpg 520w, images/food/dish-burrata-prosciutto-780.jpg 780w, images/food/dish-burrata-prosciutto-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Burrata and prosciutto toast on a rimmed plate, with cherry tomatoes, microgreens and a balsamic drizzle."
-                   loading="lazy" decoding="async" width="780" height="667">
-            </figure>
-            <div class="menu__row"><h3>Burrata Prosciutto Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div>
-            <p class="dish__desc">Burrata and prosciutto over pesto on toasted ciabatta, finished with balsamic, cracked pepper and truffle oil.</p>
-          </li>
-        </ul>
+              <article class="seq__item plate plate--dish" id="brunchPanel2" role="tabpanel" aria-labelledby="brunchTab2">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">02</span>
+                  <p class="plate__index"><span>02</span> &mdash; 03</p>
+                  <h3 class="plate__name">Avocado Toast</h3>
+                  <p class="plate__desc">Creamy mashed avocado with fresh herbs, tomatoes and radish on toasted rosemary bread with a sunny side egg.</p>
+                  <p class="plate__price">$14.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-avocado-toast-780.jpg"
+                       srcset="images/food/dish-avocado-toast-520.jpg 520w, images/food/dish-avocado-toast-780.jpg 780w, images/food/dish-avocado-toast-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Avocado toast on a rimmed plate: mashed avocado over dark rye under a sunny side egg, with cherry tomatoes and microgreens."
+                       loading="lazy" decoding="async" width="780" height="463">
+                </figure>
+              </article>
+
+              <article class="seq__item plate plate--dish" id="brunchPanel3" role="tabpanel" aria-labelledby="brunchTab3">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">03</span>
+                  <p class="plate__index"><span>03</span> &mdash; 03</p>
+                  <h3 class="plate__name">Burrata Prosciutto Toast</h3>
+                  <p class="plate__desc">Burrata and prosciutto over pesto on toasted ciabatta, finished with balsamic, cracked pepper and truffle oil.</p>
+                  <p class="plate__price">$16.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-burrata-prosciutto-780.jpg"
+                       srcset="images/food/dish-burrata-prosciutto-520.jpg 520w, images/food/dish-burrata-prosciutto-780.jpg 780w, images/food/dish-burrata-prosciutto-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Burrata and prosciutto toast on a rimmed plate, with cherry tomatoes, microgreens and a balsamic drizzle."
+                       loading="lazy" decoding="async" width="780" height="667">
+                </figure>
+              </article>
+
+            </div>
+
+            <div class="seq__foot">
+              <div class="seq__rail" role="tablist" aria-label="Brunch dishes">
+                <span class="seq__indicator" aria-hidden="true"></span>
+                <button class="seq-tab is-active" id="brunchTab1" type="button" role="tab" aria-selected="true" aria-controls="brunchPanel1" tabindex="0">
+                  <span class="seq-tab__num" aria-hidden="true">01</span>
+                  <span class="seq-tab__label">Breakfast Burrito</span>
+                </button>
+                <button class="seq-tab" id="brunchTab2" type="button" role="tab" aria-selected="false" aria-controls="brunchPanel2" tabindex="-1">
+                  <span class="seq-tab__num" aria-hidden="true">02</span>
+                  <span class="seq-tab__label">Avocado Toast</span>
+                </button>
+                <button class="seq-tab" id="brunchTab3" type="button" role="tab" aria-selected="false" aria-controls="brunchPanel3" tabindex="-1">
+                  <span class="seq-tab__num" aria-hidden="true">03</span>
+                  <span class="seq-tab__label">Burrata Prosciutto</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
 
         <ul class="menu__list course__rest" data-soft-reveal data-soft-scale="1">
           <li class="menu__item" data-soft-item><div class="menu__row"><h3>Breakfast Plate</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div><p>Two eggs cooked your way, crispy bacon, toasted bread and golden potato tots.</p></li>
@@ -486,46 +527,88 @@
         </ul>
       </div>
 
+      <!-- ---- rice & pasta: the same track, the same walk ---- -->
       <div class="course">
-        <p class="menu__cat">Rice &amp; pasta</p>
+        <div class="seq seq--kitchen" data-sequence data-seq-reveal="crossfade">
+          <div class="seq__stage">
+            <p class="menu__cat seq__label">Rice &amp; pasta</p>
 
-        <ul class="dishes" data-soft-reveal data-soft-scale="0.985">
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-kimchi-carbonara-780.jpg"
-                   srcset="images/food/dish-kimchi-carbonara-520.jpg 520w, images/food/dish-kimchi-carbonara-780.jpg 780w, images/food/dish-kimchi-carbonara-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Kimchi carbonara in a creamy red-orange sauce, finished with chilli flakes and chopped herbs, with sliced pickles alongside."
-                   loading="lazy" decoding="async" width="780" height="621">
-            </figure>
-            <div class="menu__row"><h3>Kimchi Carbonara Pasta</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div>
-            <p class="dish__desc">A rich, creamy carbonara&#8209;style pasta with seasoned kimchi for a bold, savory kick.</p>
-          </li>
+            <div class="seq__panels">
 
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-kimchi-fried-rice-780.jpg"
-                   srcset="images/food/dish-kimchi-fried-rice-520.jpg 520w, images/food/dish-kimchi-fried-rice-780.jpg 780w, images/food/dish-kimchi-fried-rice-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Kimchi fried rice under a sunny-side-up egg, with shredded nori, gochujang, arugula and pickles on the rim."
-                   loading="lazy" decoding="async" width="780" height="650">
-            </figure>
-            <div class="menu__row"><h3>Kimchi Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div>
-            <p class="dish__desc">Savory house&#8209;fermented kimchi stir&#8209;fried with rice and Spam, topped with a sunny&#8209;side&#8209;up egg and spring onions.</p>
-          </li>
+              <article class="seq__item plate plate--dish is-active" id="pastaPanel1" role="tabpanel" aria-labelledby="pastaTab1">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">01</span>
+                  <p class="plate__index"><span>01</span> &mdash; 03</p>
+                  <h3 class="plate__name">Kimchi Carbonara Pasta</h3>
+                  <p class="plate__desc">A rich, creamy carbonara&#8209;style pasta with seasoned kimchi for a bold, savory kick.</p>
+                  <p class="plate__price">$17.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-kimchi-carbonara-780.jpg"
+                       srcset="images/food/dish-kimchi-carbonara-520.jpg 520w, images/food/dish-kimchi-carbonara-780.jpg 780w, images/food/dish-kimchi-carbonara-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Kimchi carbonara in a creamy red-orange sauce, finished with chilli flakes and chopped herbs, with sliced pickles alongside."
+                       loading="lazy" decoding="async" width="780" height="621">
+                </figure>
+              </article>
 
-          <li class="dish" data-soft-item>
-            <figure class="dish__media">
-              <img src="images/food/dish-fettuccine-alfredo-780.jpg"
-                   srcset="images/food/dish-fettuccine-alfredo-520.jpg 520w, images/food/dish-fettuccine-alfredo-780.jpg 780w, images/food/dish-fettuccine-alfredo-1040.jpg 1040w"
-                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
-                   alt="Fettuccine alfredo with shrimp in a cream sauce, scattered with parsley, pickles alongside."
-                   loading="lazy" decoding="async" width="780" height="507">
-            </figure>
-            <div class="menu__row"><h3>Fettuccine Alfredo</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div>
-            <p class="dish__desc">Silky house&#8209;made Alfredo tossed with fettuccine, with your choice of chicken or shrimp.</p>
-          </li>
-        </ul>
+              <article class="seq__item plate plate--dish" id="pastaPanel2" role="tabpanel" aria-labelledby="pastaTab2">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">02</span>
+                  <p class="plate__index"><span>02</span> &mdash; 03</p>
+                  <h3 class="plate__name">Kimchi Fried Rice</h3>
+                  <p class="plate__desc">Savory house&#8209;fermented kimchi stir&#8209;fried with rice and Spam, topped with a sunny&#8209;side&#8209;up egg and spring onions.</p>
+                  <p class="plate__price">$16.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-kimchi-fried-rice-780.jpg"
+                       srcset="images/food/dish-kimchi-fried-rice-520.jpg 520w, images/food/dish-kimchi-fried-rice-780.jpg 780w, images/food/dish-kimchi-fried-rice-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Kimchi fried rice under a sunny-side-up egg, with shredded nori, gochujang, arugula and pickles on the rim."
+                       loading="lazy" decoding="async" width="780" height="650">
+                </figure>
+              </article>
+
+              <article class="seq__item plate plate--dish" id="pastaPanel3" role="tabpanel" aria-labelledby="pastaTab3">
+                <div class="seq__text plate__text">
+                  <span class="plate__num" aria-hidden="true">03</span>
+                  <p class="plate__index"><span>03</span> &mdash; 03</p>
+                  <h3 class="plate__name">Fettuccine Alfredo</h3>
+                  <p class="plate__desc">Silky house&#8209;made Alfredo tossed with fettuccine, with your choice of chicken or shrimp.</p>
+                  <p class="plate__price">$17.00</p>
+                </div>
+                <figure class="seq__media plate__media">
+                  <img src="images/food/dish-fettuccine-alfredo-780.jpg"
+                       srcset="images/food/dish-fettuccine-alfredo-520.jpg 520w, images/food/dish-fettuccine-alfredo-780.jpg 780w, images/food/dish-fettuccine-alfredo-1040.jpg 1040w"
+                       sizes="(max-width: 899px) 92vw, 52vw"
+                       alt="Fettuccine alfredo with shrimp in a cream sauce, scattered with parsley, pickles alongside."
+                       loading="lazy" decoding="async" width="780" height="507">
+                </figure>
+              </article>
+
+            </div>
+
+            <div class="seq__foot">
+              <div class="seq__rail" role="tablist" aria-label="Rice and pasta dishes">
+                <span class="seq__indicator" aria-hidden="true"></span>
+                <button class="seq-tab is-active" id="pastaTab1" type="button" role="tab" aria-selected="true" aria-controls="pastaPanel1" tabindex="0">
+                  <span class="seq-tab__num" aria-hidden="true">01</span>
+                  <span class="seq-tab__label">Kimchi Carbonara</span>
+                </button>
+                <button class="seq-tab" id="pastaTab2" type="button" role="tab" aria-selected="false" aria-controls="pastaPanel2" tabindex="-1">
+                  <span class="seq-tab__num" aria-hidden="true">02</span>
+                  <span class="seq-tab__label">Kimchi Fried Rice</span>
+                </button>
+                <button class="seq-tab" id="pastaTab3" type="button" role="tab" aria-selected="false" aria-controls="pastaPanel3" tabindex="-1">
+                  <span class="seq-tab__num" aria-hidden="true">03</span>
+                  <span class="seq-tab__label">Fettuccine Alfredo</span>
+                </button>
+              </div>
+              <a class="seq__cta" href="https://cash.app/order/$motiqlosangeles" target="_blank" rel="noopener">Order online <span aria-hidden="true">&#8599;</span></a>
+            </div>
+
+          </div>
+        </div>
 
         <ul class="menu__list course__rest" data-soft-reveal data-soft-scale="1">
           <li class="menu__item" data-soft-item><div class="menu__row"><h3>Spam Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div><p>Golden fried rice with Spam, eggs, scallions and aromatic seasonings.</p></li>
@@ -707,6 +790,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609231930" defer></script>
+<script src="assets/js/main.js?v=202609240115" defer></script>
 </body>
 </html>

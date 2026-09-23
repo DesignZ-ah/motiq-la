@@ -19,14 +19,14 @@
   var lenis = null;
   var cleanups = [];
 
-  /* A refresh measures every trigger against the current scroll position. If
-     one lands while a programmatic scroll is still flying, ScrollTrigger reads
-     a position the engine has not settled on and bakes the difference into
-     every start and end on the page — the rail presses then jump to the wrong
-     place, and scroll stops matching what is on stage. Thirty lazy images each
-     calling refresh() directly made that a matter of timing, so every caller
-     goes through here instead: one debounced refresh, deferred until the page
-     is sitting still. */
+  /* Refreshing is not cheap and around thirty lazy images each want one as
+     they land, so every caller comes through here: one debounced refresh, and
+     never while a programmatic scroll is still flying.
+
+     (The measurement itself is only trustworthy because `scroll-behavior` is
+     forced to auto once Lenis is driving — see the stylesheet. Left smooth,
+     the scroll ScrollTrigger performs to measure the page animates instead of
+     landing, so it reads every position back short by the scroll offset.) */
   var scrollSettlesAt = 0;
   var refreshTimer = 0;
 
@@ -116,9 +116,16 @@
         var target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
+        // The mobile panel holds a copy of these links and stops Lenis while
+        // it is open, and a stopped Lenis drops scrollTo without a word. The
+        // panel's own handler closes it on the way back up the tree — too late,
+        // the scroll has already been asked for and refused. So close it here,
+        // before asking, and ask with force in case anything else has paused
+        // the engine.
+        if (open) setOpen(false);
         if (lenis) {
           holdRefresh(1700);
-          lenis.scrollTo(target, { offset: -1, duration: 1.15 });
+          lenis.scrollTo(target, { offset: -1, duration: 1.15, force: true });
         } else {
           target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
         }
@@ -287,8 +294,8 @@
   function revealCrossfade(item) {
     var gsap = window.gsap;
     var media = item.querySelector('.seq__media img');
-    var numeral = item.querySelector('.sig-item__num');
-    var text = item.querySelectorAll('.sig-item__index, .sig-item__name, .sig-item__desc, .sig-item__price');
+    var numeral = item.querySelector('.plate__num');
+    var text = item.querySelectorAll('.plate__index, .plate__name, .plate__desc, .plate__price');
     var tl = gsap.timeline();
 
     if (media) {
@@ -627,9 +634,18 @@
     gsap.registerPlugin(ScrollTrigger);
     gsap.defaults({ ease: 'power3.out', duration: 0.85 });
 
+    // ScrollTrigger's own load and resize refreshes are turned off so they go
+    // through the debounce above instead of firing one apiece.
+    ScrollTrigger.config({ autoRefreshEvents: 'none' });
+    window.addEventListener('resize', requestRefresh);
+    document.addEventListener('visibilitychange', requestRefresh);
+
     /* -- smooth scroll (exactly one engine) -- */
     if (!reduceMotion && typeof window.Lenis !== 'undefined') {
       lenis = new window.Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.9 });
+      // Belt and braces with the stylesheet: exactly one engine may animate a
+      // scroll, and from here it is this one.
+      root.style.setProperty('scroll-behavior', 'auto', 'important');
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
       gsap.ticker.lagSmoothing(0);

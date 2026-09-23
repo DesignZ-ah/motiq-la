@@ -36,6 +36,12 @@ html{
   background:var(--page-bg);
 }
 html.lenis,html.lenis body{height:auto}
+/* Native smooth scrolling is the no-JS fallback for the anchor links. Once
+   Lenis is driving it has to go, and not only when Lenis says it is mid-scroll:
+   `scroll-behavior:smooth` makes every programmatic scroll animate, so the one
+   ScrollTrigger performs to measure the page never lands before it reads the
+   positions back, and every trigger is recorded short by the scroll offset. */
+html.lenis{scroll-behavior:auto !important}
 .lenis.lenis-smooth{scroll-behavior:auto !important}
 .lenis.lenis-stopped{overflow:hidden}
 
@@ -459,22 +465,22 @@ ul{margin:0;padding:0;list-style:none}
 }
 
 /* ---------- signature sequence (cream top) ---------- */
-.sig-item__text > :not(.sig-item__num){position:relative;z-index:1}
-.sig-item__index{
+.plate__text > :not(.plate__num){position:relative;z-index:1}
+.plate__index{
   font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
   opacity:.58;margin-bottom:1.25em;
 }
-.sig-item__index span{color:var(--accent);opacity:1}
-.sig-item__name{
+.plate__index span{color:var(--accent);opacity:1}
+.plate__name{
   font-family:var(--font-display);font-weight:400;
   font-size:clamp(2.1rem,4.7vw,3.9rem);line-height:1.02;letter-spacing:-.022em;
   margin-bottom:.45em;text-wrap:balance;
 }
-.sig-item__desc{
+.plate__desc{
   font-size:clamp(.95rem,.4vw + .88rem,1.06rem);line-height:1.62;
   opacity:.72;max-width:36ch;min-height:4.9em;
 }
-.sig-item__price{
+.plate__price{
   margin-top:1.3em;padding-top:1.1em;
   border-top:var(--rule) solid color-mix(in srgb, currentColor 20%, transparent);
   font-family:var(--font-display);font-size:1.45rem;
@@ -483,13 +489,13 @@ ul{margin:0;padding:0;list-style:none}
 
 /* The drinks are cut out and flattened onto this section's own ground, so
    they read as objects standing on the page rather than framed photographs. */
-.sig-item__media{aspect-ratio:5/6}
-.sig-item__media img{
+.plate__media{aspect-ratio:5/6}
+.plate__media img{
   width:100%;height:100%;object-fit:contain;object-position:center bottom;
 }
 
 /* Ghost numeral: set behind the name, in the accent, barely there. */
-.sig-item__num{
+.plate__num{
   position:absolute;left:-.04em;top:-.56em;z-index:0;
   pointer-events:none;user-select:none;
   font-family:var(--font-display);font-size:clamp(6.5rem,12vw,10.5rem);
@@ -497,30 +503,30 @@ ul{margin:0;padding:0;list-style:none}
 }
 
 @media (max-width:899px){
-  .sig-item__num{top:-.44em;font-size:clamp(5rem,17vw,8rem);opacity:.11}
+  .plate__num{top:-.44em;font-size:clamp(5rem,17vw,8rem);opacity:.11}
   /* The rail below already counts the drinks off on a phone, so the index
      line is redundant here — and dropping it clears the ghost numeral. */
-  .seq.is-sequenced .sig-item__index{display:none}
+  .seq.is-sequenced .plate__index{display:none}
 }
 @media (max-width:620px){
-  .sig-item{gap:14px}
-  .sig-item__media{aspect-ratio:1/1}
-  .sig-item__index{margin-bottom:.8em}
-  .sig-item__desc{min-height:4.2em}
-  .sig-item__price{margin-top:.85em;padding-top:.85em}
+  .plate{gap:14px}
+  .plate__media{aspect-ratio:1/1}
+  .plate__index{margin-bottom:.8em}
+  .plate__desc{min-height:4.2em}
+  .plate__price{margin-top:.85em;padding-top:.85em}
 }
 @media (min-width:900px){
-  .sig-item__media{aspect-ratio:auto;height:clamp(430px,62vh,640px)}
+  .plate__media{aspect-ratio:auto;height:clamp(430px,62vh,640px)}
 }
 @media (max-width:899px) and (max-height:620px) and (min-width:620px){
-  .seq.is-sequenced .sig-item__index{display:block}
-  .seq.is-sequenced .sig-item__desc{min-height:0}
-  .seq.is-sequenced .sig-item__num{display:none}
+  .seq.is-sequenced .plate__index{display:block}
+  .seq.is-sequenced .plate__desc{min-height:0}
+  .seq.is-sequenced .plate__num{display:none}
 }
 /* Narrow and short at once leaves room for the drink and its name only. */
 @media (max-width:619px) and (max-height:620px){
-  .seq.is-sequenced .sig-item__desc{display:none}
-  .seq.is-sequenced .sig-item__num{display:none}
+  .seq.is-sequenced .plate__desc{display:none}
+  .seq.is-sequenced .plate__num{display:none}
 }
 
 /* ---------- espresso ----------
@@ -678,30 +684,22 @@ ul{margin:0;padding:0;list-style:none}
 .course{display:grid;gap:clamp(26px,3vw,40px)}
 .course .menu__cat{margin-bottom:0;padding-bottom:1em}
 
-.dishes{
-  display:grid;gap:clamp(30px,3.6vw,56px) clamp(24px,3vw,48px);
-  grid-template-columns:minmax(0,1fr);
-}
-@media (min-width:700px){.dishes{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1040px){.dishes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Each photographed course is a sticky track, walked one plate at a time —
+   the same machinery as the cream tops, so the page keeps one way of showing
+   off a thing it made. The course label rides along at the top of the stage,
+   because on a menu you need to know which list you are standing in. */
+.seq--kitchen.is-sequenced{--seq-steps:2.7}
+@media (max-width:899px){.seq--kitchen.is-sequenced{--seq-steps:2.5}}
 
-.dish{display:flex;flex-direction:column}
-.dish__media{
-  /* One ratio across the row so the names line up, `contain` inside it so no
-     plate is ever clipped. The letterboxing is the section's own colour, so
-     the box itself is invisible.
+.seq--kitchen.is-sequenced .seq__stage{
+  grid-template-rows:auto minmax(0,1fr) auto;
+}
+.seq__label{margin-bottom:clamp(14px,2vw,26px)}
+.seq.is-sequenced .seq__label{margin-bottom:clamp(10px,1.6vw,20px)}
 
-     The picture is taken out of flow: left in flow, a tall plate's intrinsic
-     height wins over aspect-ratio and the row stops aligning. */
-  position:relative;aspect-ratio:3/2;margin-bottom:clamp(12px,1.4vw,20px);
-}
-.dish__media img{
-  position:absolute;inset:0;
-  width:100%;height:100%;object-fit:contain;object-position:center bottom;
-}
-.dish .menu__row{align-items:baseline}
-.dish__desc{
-  margin-top:.5em;font-size:.9rem;line-height:1.55;opacity:.64;max-width:42ch;
+/* A plate is wider than a glass, so the picture takes the larger share. */
+@media (min-width:900px){
+  .seq--kitchen.is-sequenced .seq__item{grid-template-columns:.84fr 1.16fr}
 }
 
 /* The items with no photograph keep the plain name-and-price row. */
@@ -713,8 +711,17 @@ ul{margin:0;padding:0;list-style:none}
   .course__rest{grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px) clamp(36px,6vw,96px)}
 }
 .course__rest--rows{padding-top:0;border-top:0}
-@media (max-width:699px){
-  .dish__media{aspect-ratio:16/10}
+
+/* A plate is shot from above and reads landscape, where a drink stands up.
+   `contain` keeps every plate whole; the letterboxing is the section's own
+   colour, so the box around it is invisible. */
+.plate--dish .plate__media{aspect-ratio:3/2}
+.plate--dish .plate__media img{object-position:center center}
+@media (max-width:620px){
+  .plate--dish .plate__media{aspect-ratio:4/3}
+}
+@media (min-width:900px){
+  .plate--dish .plate__media{aspect-ratio:auto}
 }
 
 /* ---------- the room ---------- */
