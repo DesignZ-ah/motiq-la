@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609231700">
+<link rel="stylesheet" href="assets/css/style.css?v=202609231930">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -363,57 +363,68 @@
 
   <!-- ============ HOJICHA ============ -->
   <section class="chapter chapter--roast" id="hojicha" data-theme data-bg="#2E2318" data-fg="#EFE2D2" data-accent="#C4802B" style="--bg:#2E2318;--fg:#EFE2D2;--accent:#C4802B" data-nav="light">
-    <div class="hojicha">
-      <div class="hojicha__text">
-        <p class="eyebrow" data-reveal="fade-up">04 &mdash; Roasted green tea</p>
-        <h2 class="chapter__title" data-motion-text="words">Hojicha, from Uji.</h2>
-        <div class="hojicha__copy" data-soft-reveal data-soft-scale="1">
-        <p class="chapter__lede" data-soft-item>Warm notes of caramel, roasted rice and brown sugar. Smooth and round&#8209;bodied, with a nutty sweetness and a soft, comforting finish.</p>
-        <ul class="menu__list menu__list--inline">
-          <li class="menu__item" data-soft-item>
-            <div class="menu__row"><h3>Hojicha Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div>
-            <p>Roasted green tea latte with warm nutty notes, soft chocolate depth and a smooth finish.</p>
-          </li>
-          <li class="menu__item" data-soft-item>
-            <div class="menu__row"><h3>Chestnut Hojicha Cream Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.25</span></div>
-            <p>Roasted hojicha layered with chestnut cream for a rich, nutty, dessert&#8209;like finish.</p>
-          </li>
-        </ul>
-        </div>
-      </div>
-      <div class="hojicha__plates" data-soft-reveal>
-        <div class="slider" data-slider data-soft-item>
-          <div class="slider__frame">
 
-            <figure class="slide is-active" id="hojSlide1" role="tabpanel" aria-labelledby="hojTab1">
-              <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
-                   srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
-                   sizes="(max-width: 899px) 100vw, 46vw"
-                   alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692">
-              <figcaption>Whisked to a fine, velvety foam</figcaption>
-            </figure>
+    <div class="seq seq--hojicha" data-sequence data-seq-reveal="slide">
+      <div class="seq__stage">
+        <div class="hojicha">
 
-            <figure class="slide" id="hojSlide2" role="tabpanel" aria-labelledby="hojTab2">
-              <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
-                   srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
-                   sizes="(max-width: 899px) 100vw, 46vw"
-                   alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640">
-              <figcaption>Poured over ice, tea settling over milk</figcaption>
-            </figure>
-
+          <div class="hojicha__text">
+            <p class="eyebrow" data-reveal="fade-up">04 &mdash; Roasted green tea</p>
+            <h2 class="chapter__title" data-motion-text="words">Hojicha, from Uji.</h2>
+            <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.08">Warm notes of caramel, roasted rice and brown sugar. Smooth and round&#8209;bodied, with a nutty sweetness and a soft, comforting finish.</p>
           </div>
 
-          <div class="slider__tabs" role="tablist" aria-label="Hojicha, served two ways">
-            <button class="slider__tab is-active" id="hojTab1" type="button" role="tab" aria-selected="true" aria-controls="hojSlide1" tabindex="0">
-              <span class="slider__tabnum" aria-hidden="true">01</span><span>Whisked</span>
+          <div class="seq__panels">
+            <article class="seq__item hojpanel is-active" id="hojPanel1" role="tabpanel" aria-labelledby="hojTab1">
+              <figure class="seq__media hojpanel__media">
+                <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
+                     srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
+                     sizes="(max-width: 899px) 100vw, 48vw"
+                     alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692">
+                <figcaption>Whisked to a fine, velvety foam</figcaption>
+              </figure>
+            </article>
+
+            <article class="seq__item hojpanel" id="hojPanel2" role="tabpanel" aria-labelledby="hojTab2">
+              <figure class="seq__media hojpanel__media">
+                <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
+                     srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
+                     sizes="(max-width: 899px) 100vw, 48vw"
+                     alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640">
+                <figcaption>Poured over ice, tea settling over milk</figcaption>
+              </figure>
+            </article>
+          </div>
+
+        </div>
+
+        <div class="seq__foot">
+          <div class="seq__rail" role="tablist" aria-label="Hojicha, served two ways">
+            <span class="seq__indicator" aria-hidden="true"></span>
+            <button class="seq-tab is-active" id="hojTab1" type="button" role="tab" aria-selected="true" aria-controls="hojPanel1" tabindex="0">
+              <span class="seq-tab__num" aria-hidden="true">01</span>
+              <span class="seq-tab__label">01 Whisked</span>
             </button>
-            <button class="slider__tab" id="hojTab2" type="button" role="tab" aria-selected="false" aria-controls="hojSlide2" tabindex="-1">
-              <span class="slider__tabnum" aria-hidden="true">02</span><span>Iced</span>
+            <button class="seq-tab" id="hojTab2" type="button" role="tab" aria-selected="false" aria-controls="hojPanel2" tabindex="-1">
+              <span class="seq-tab__num" aria-hidden="true">02</span>
+              <span class="seq-tab__label">02 Iced</span>
             </button>
           </div>
         </div>
+
       </div>
     </div>
+
+    <ul class="menu__list menu__list--inline hojicha__menu" data-soft-reveal data-soft-scale="1">
+      <li class="menu__item" data-soft-item>
+        <div class="menu__row"><h3>Hojicha Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div>
+        <p>Roasted green tea latte with warm nutty notes, soft chocolate depth and a smooth finish.</p>
+      </li>
+      <li class="menu__item" data-soft-item>
+        <div class="menu__row"><h3>Chestnut Hojicha Cream Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.25</span></div>
+        <p>Roasted hojicha layered with chestnut cream for a rich, nutty, dessert&#8209;like finish.</p>
+      </li>
+    </ul>
   </section>
 
   <!-- ============ KITCHEN ============ -->
@@ -696,6 +707,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609231700" defer></script>
+<script src="assets/js/main.js?v=202609231930" defer></script>
 </body>
 </html>

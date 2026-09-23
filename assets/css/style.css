@@ -604,76 +604,66 @@ ul{margin:0;padding:0;list-style:none}
   .espresso__still{aspect-ratio:16/10}
 }
 
-/* ---------- hojicha ---------- */
-.hojicha{
-  max-width:var(--maxw);margin:0 auto;
-  display:grid;gap:clamp(34px,4.6vw,76px);
-  grid-template-columns:minmax(0,1fr);align-items:center;
-}
-@media (min-width:900px){.hojicha{grid-template-columns:1fr 1fr}}
-.hojicha__copy{margin-top:clamp(18px,2.4vw,30px)}
-.hojicha__copy .menu__list--inline{margin-top:clamp(24px,3.2vw,40px)}
-.hojicha__plates{position:relative}
+/* ---------- hojicha ----------
+   The same sticky track as the cream tops and the beans: scroll walks the
+   two pours, and a press on the rail flies straight to one. The heading sits
+   inside the stage beside the frame, because the chapter is one idea shown
+   two ways rather than two separate subjects. */
+.seq--hojicha.is-sequenced{--seq-steps:2.3}
+@media (max-width:899px){.seq--hojicha.is-sequenced{--seq-steps:2.2}}
 
-/* ---- slide tab: two plates, one frame ----
-   Both photographs share a single 4/3 window so the chapter holds one shape
-   at every width, and the pair slides rather than crossfading — the frame
-   stays put while its contents are replaced. */
-.slider__frame{
-  position:relative;overflow:hidden;
+.hojicha{
+  display:grid;gap:clamp(26px,4vw,72px);
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;min-height:0;
+}
+@media (min-width:900px){.hojicha{grid-template-columns:.86fr 1.14fr}}
+.hojicha__text .chapter__lede{margin-top:clamp(14px,1.8vw,22px)}
+
+/* One window, re-filled. Both photographs share it, so the chapter holds a
+   single shape while its contents change. */
+.hojicha__menu{margin-top:clamp(40px,5vw,72px)}
+.hojpanel__media{
+  overflow:hidden;position:relative;
   aspect-ratio:4/3;
   background:rgba(255,255,255,.04);
   box-shadow:0 30px 74px -38px rgba(0,0,0,.8);
 }
-.slide{position:relative;width:100%;height:100%}
-.slide img{width:100%;height:100%;object-fit:cover;object-position:center}
-.slide + .slide{margin-top:clamp(12px,1.6vw,20px)}  /* no-JS: a readable stack */
-
-.slider.is-enhanced .slider__frame{display:grid}
-.slider.is-enhanced .slide{
-  grid-area:1 / 1;margin:0;
-  opacity:0;visibility:hidden;pointer-events:none;
-}
-.slider.is-enhanced .slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
-
-.slide figcaption{
+.hojpanel__media img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hojpanel__media figcaption{
   position:absolute;z-index:2;
   left:clamp(14px,2vw,26px);right:clamp(14px,2vw,26px);
   bottom:clamp(11px,1.6vw,20px);
   font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;
 }
-.slide::after{
-  content:"";position:absolute;inset:auto 0 0 0;height:44%;pointer-events:none;
+.hojpanel__media::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:42%;pointer-events:none;
   background:linear-gradient(to top, rgba(14,10,6,.66), transparent);
 }
-
-.slider__tabs{display:none}
-.slider.is-enhanced .slider__tabs{
-  display:flex;gap:clamp(18px,3vw,40px);
-  margin-top:clamp(16px,2.2vw,26px);
+/* The frame is sized against the viewport, not against its parent: inside a
+   centred grid the column has no definite height to resolve a percentage
+   against, and the window would collapse to its intrinsic size. */
+.seq--hojicha.is-sequenced .seq__panels{align-items:center}
+/* This panel holds a picture and nothing else, so it drops the shared
+   text-and-media column split it would otherwise inherit. */
+.seq--hojicha .hojpanel{
+  grid-template-columns:minmax(0,1fr);
+  align-content:center;justify-items:center;
 }
-.slider__tab{
-  appearance:none;-webkit-appearance:none;background:none;border:0;color:inherit;
-  font-family:inherit;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
-  display:flex;align-items:baseline;gap:.65em;white-space:nowrap;
-  padding:0 0 .8em;cursor:pointer;opacity:.45;position:relative;
-  transition:opacity var(--t-mid) var(--ease);
+.seq--hojicha.is-sequenced .hojpanel__media{width:100%;margin-inline:auto}
+@media (min-width:900px){
+  .seq--hojicha.is-sequenced .hojpanel__media{
+    height:clamp(320px, 58svh, 620px);
+    width:auto;aspect-ratio:4/3;max-width:100%;
+  }
 }
-.slider__tab:hover{opacity:.8}
-.slider__tab.is-active{opacity:1}
-.slider__tab::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
-  background:var(--accent);transform:scaleX(0);transform-origin:left center;
-  transition:transform var(--t-slow) var(--ease);
-}
-.slider__tab.is-active::after{transform:scaleX(1)}
-.slider__tabnum{font-variant-numeric:tabular-nums;color:var(--accent);opacity:.9}
-
 @media (max-width:899px){
-  /* Full width on a phone: the frame is the chapter's picture, so it takes
-     the screen rather than sitting in a column with air beside it. */
-  .slider__frame{margin-inline:calc(var(--gutter) * -1);aspect-ratio:5/4}
-  .slider.is-enhanced .slider__tabs{margin-top:clamp(14px,3.4vw,20px)}
+  .seq--hojicha.is-sequenced .hojicha{align-content:center}
+  .hojpanel__media{margin-inline:calc(var(--gutter) * -1);aspect-ratio:5/4}
+}
+/* Short landscape: the lede is the first thing to give up its room. */
+@media (max-width:899px) and (max-height:620px){
+  .seq--hojicha.is-sequenced .chapter__lede{display:none}
 }
 
 /* ---------- kitchen ----------

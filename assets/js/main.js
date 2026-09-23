@@ -19,6 +19,28 @@
   var lenis = null;
   var cleanups = [];
 
+  /* A refresh measures every trigger against the current scroll position. If
+     one lands while a programmatic scroll is still flying, ScrollTrigger reads
+     a position the engine has not settled on and bakes the difference into
+     every start and end on the page — the rail presses then jump to the wrong
+     place, and scroll stops matching what is on stage. Thirty lazy images each
+     calling refresh() directly made that a matter of timing, so every caller
+     goes through here instead: one debounced refresh, deferred until the page
+     is sitting still. */
+  var scrollSettlesAt = 0;
+  var refreshTimer = 0;
+
+  function holdRefresh(ms) { scrollSettlesAt = Date.now() + ms; }
+
+  function requestRefresh() {
+    if (!hasGSAP) return;
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(function () {
+      if (Date.now() < scrollSettlesAt) { requestRefresh(); return; }
+      window.ScrollTrigger.refresh();
+    }, 180);
+  }
+
   /* ---------------------------------------------------------------------
      NAV — works with or without GSAP
      --------------------------------------------------------------------- */
@@ -95,6 +117,7 @@
         if (!target) return;
         e.preventDefault();
         if (lenis) {
+          holdRefresh(1700);
           lenis.scrollTo(target, { offset: -1, duration: 1.15 });
         } else {
           target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
@@ -230,101 +253,6 @@
      only appears once this has taken over.
      --------------------------------------------------------------------- */
   /* ---------------------------------------------------------------------
-     SLIDER — a tabbed pair of photographs in one frame
-
-     Where the sequences hand the screen to scroll, this one is driven by the
-     reader: two plates share a frame and the tabs slide between them. It is
-     deliberately not a third sticky track — the page already has two, and a
-     small control here gives the chapter its own register.
-     --------------------------------------------------------------------- */
-  function initSliders() {
-    document.querySelectorAll('[data-slider]').forEach(function (block) {
-      var slides = Array.prototype.slice.call(block.querySelectorAll('.slide'));
-      var tabs = Array.prototype.slice.call(block.querySelectorAll('.slider__tab'));
-      if (slides.length < 2 || tabs.length !== slides.length) return;
-
-      // Without GSAP the slides are simply a stack of figures, so the tabs
-      // would control nothing: take them out rather than leave them lying.
-      if (!hasGSAP || reduceMotion) {
-        var rail = block.querySelector('.slider__tabs');
-        if (rail) rail.remove();
-        slides.forEach(function (fig) {
-          fig.removeAttribute('role');
-          fig.removeAttribute('aria-labelledby');
-          fig.classList.remove('is-active');
-        });
-        return;
-      }
-
-      var gsap = window.gsap;
-      var current = 0;
-      var busy = 0;
-      block.classList.add('is-enhanced');
-
-      function go(next, viaKeyboard) {
-        if (next === current || next < 0 || next >= slides.length) return;
-
-        var dir = next > current ? 1 : -1;
-        var outgoing = slides[current];
-        var incoming = slides[next];
-        current = next;
-
-        tabs.forEach(function (t, i) {
-          var on = i === current;
-          t.classList.toggle('is-active', on);
-          t.setAttribute('aria-selected', on ? 'true' : 'false');
-          t.tabIndex = on ? 0 : -1;
-        });
-
-        gsap.killTweensOf(slides);
-        incoming.classList.add('is-active');
-
-        // The frame is the only thing that moves: one plate steps out to the
-        // side as the next steps in behind it, so the pair reads as one
-        // photograph being replaced rather than two boxes swapping.
-        clearTimeout(busy);
-        busy = setTimeout(function () {
-          slides.forEach(function (f, i) { if (i !== current) f.classList.remove('is-active'); });
-          gsap.set(slides, { clearProps: 'opacity,transform' });
-        }, 1200);
-
-        gsap.to(outgoing, {
-          xPercent: -12 * dir, opacity: 0, duration: 0.5, ease: 'power2.inOut'
-        });
-        gsap.fromTo(incoming,
-          { xPercent: 16 * dir, opacity: 0, scale: 1.05 },
-          {
-            xPercent: 0, opacity: 1, scale: 1, duration: 0.82, ease: 'power3.out',
-            onComplete: function () {
-              clearTimeout(busy);
-              slides.forEach(function (f, i) { if (i !== current) f.classList.remove('is-active'); });
-              gsap.set(slides, { clearProps: 'opacity,transform' });
-            }
-          });
-
-        if (viaKeyboard) tabs[current].focus();
-      }
-
-      tabs.forEach(function (tab, i) {
-        tab.addEventListener('click', function () { go(i); });
-        tab.addEventListener('keydown', function (e) {
-          var last = tabs.length - 1;
-          var next = null;
-          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = i === last ? 0 : i + 1;
-          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = i === 0 ? last : i - 1;
-          else if (e.key === 'Home') next = 0;
-          else if (e.key === 'End') next = last;
-          if (next === null) return;
-          e.preventDefault();
-          go(next, true);
-        });
-      });
-
-      cleanups.push(function () { clearTimeout(busy); });
-    });
-  }
-
-  /* ---------------------------------------------------------------------
      SEQUENCE — scroll walks a sticky track, one panel at a time
 
      Used by the cream tops and by the espresso beans. The track is a tall
@@ -427,7 +355,41 @@
     return tl;
   }
 
-  var SEQ_REVEALS = { crossfade: revealCrossfade, focus: revealFocus };
+  // Hojicha: the frame stays put and its contents are replaced. The outgoing
+  // picture steps out to the side while the next steps in behind it, so the
+  // pair reads as one window being re-filled rather than two boxes swapping.
+  function revealSlide(item, outgoing, dir) {
+    var gsap = window.gsap;
+    var d = dir || 1;
+    var img = item.querySelector('.seq__media img');
+    var cap = item.querySelector('figcaption');
+    var tl = gsap.timeline();
+
+    if (outgoing) {
+      var out = outgoing.querySelector('.seq__media img');
+      // Cleared at the end rather than left parked: by then the outgoing
+      // panel is already at zero opacity, so the reset is never seen.
+      if (out) {
+        tl.to(out, { xPercent: -15 * d, duration: 0.58, ease: 'power2.inOut',
+          clearProps: 'transform' }, 0);
+      }
+    }
+    if (img) {
+      tl.fromTo(img,
+        { xPercent: 20 * d, scale: 1.06 },
+        { xPercent: 0, scale: 1, duration: 0.88, ease: 'power3.out',
+          clearProps: 'transform' }, 0);
+    }
+    if (cap) {
+      tl.fromTo(cap,
+        { y: 14, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
+          clearProps: 'transform,opacity' }, 0.26);
+    }
+    return tl;
+  }
+
+  var SEQ_REVEALS = { crossfade: revealCrossfade, focus: revealFocus, slide: revealSlide };
 
   function initSequences() {
     var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-sequence]'));
@@ -498,6 +460,7 @@
 
       var outgoing = items[current];
       var incoming = items[next];
+      var dir = next > current ? 1 : -1;
 
       current = next;
       markTabs();
@@ -512,7 +475,7 @@
       gsap.to(outgoing, { opacity: 0, duration: 0.4, ease: 'power2.out' });
       gsap.fromTo(incoming, { opacity: 0 },
         { opacity: 1, duration: 0.55, ease: 'power2.out', onComplete: settle });
-      reveal(incoming);
+      reveal(incoming, outgoing, dir);
     }
 
     /* -- scroll drives the index ---------------------------------------- */
@@ -551,10 +514,15 @@
 
     /* -- pressing a number is a request to see that panel --------------- */
     function scrollToIndex(i) {
-      var travel = seq.end - seq.start;
+      // Measured from the element, not from the trigger's cached start and
+      // end: those are a snapshot, and a snapshot taken at a bad moment would
+      // fling the page to the wrong end of the document.
+      var top = block.getBoundingClientRect().top + window.scrollY;
+      var travel = block.offsetHeight - window.innerHeight;
       if (!(travel > 0)) return;
-      var target = seq.start + travel * ((i + 0.5) / count);
+      var target = top + travel * ((i + 0.5) / count);
 
+      holdRefresh(1400);
       clearTimeout(jumping);
       // The timer, not the engine's callback, is what releases the lock: if the
       // person grabs the page mid-flight the callback may never run.
@@ -906,14 +874,15 @@
 
     /* -- measurements settle after fonts and lazy media -- */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
+      document.fonts.ready.then(requestRefresh);
     }
-    window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    window.addEventListener('load', requestRefresh);
     document.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
-      img.addEventListener('load', function () { ScrollTrigger.refresh(); }, { once: true });
+      img.addEventListener('load', requestRefresh, { once: true });
     });
 
     cleanups.push(function () {
+      clearTimeout(refreshTimer);
       ScrollTrigger.getAll().forEach(function (st) { st.kill(); });
       gsap.globalTimeline.clear();
     });
@@ -931,9 +900,6 @@
     // initMotion. Without GSAP they never enhance at all.
     if (!hasGSAP) document.querySelectorAll('[data-sequence]').forEach(demoteSequence);
 
-    // The slider needs neither, only click and keyboard, so it is built here —
-    // and it stands its own tabs down when there is nothing to animate with.
-    initSliders();
 
     // has-motion is applied inside initMotion, not here: rAF never fires in a
     // background tab, so a page opened in one would sit hiding its own content
