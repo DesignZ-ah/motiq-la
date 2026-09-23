@@ -53,7 +53,10 @@ body{
   overflow-x:clip;
 }
 
-img,video{max-width:100%;display:block}
+/* height:auto matters: without it a width/height attribute pair on an <img>
+   sets a presentational height that nothing overrides, so any rule relying on
+   aspect-ratio is ignored and object-fit crops to the attribute's shape. */
+img,video{max-width:100%;height:auto;display:block}
 a{color:inherit}
 h1,h2,h3,p,dl,dd,figure,table{margin:0}
 ul{margin:0;padding:0;list-style:none}
@@ -610,58 +613,67 @@ ul{margin:0;padding:0;list-style:none}
 @media (min-width:900px){.hojicha{grid-template-columns:1fr 1fr}}
 .hojicha__copy{margin-top:clamp(18px,2.4vw,30px)}
 .hojicha__copy .menu__list--inline{margin-top:clamp(24px,3.2vw,40px)}
-.hojicha__plates{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.8vw,24px);align-items:start}
-.plate{position:relative;overflow:hidden;background:rgba(255,255,255,.04)}
-.plate img{width:100%;height:118%;object-fit:cover}
+.hojicha__plates{position:relative}
 
-/* The whisked bowl is the section's hero: a single wide panel that rises into
-   place on the chapter's shared beat. Everything else in the column supports it. */
-.plate--hero{
-  grid-column:1 / -1;aspect-ratio:1080/692;
-  box-shadow:0 28px 70px -34px rgba(0,0,0,.75);
+/* ---- slide tab: two plates, one frame ----
+   Both photographs share a single 4/3 window so the chapter holds one shape
+   at every width, and the pair slides rather than crossfading — the frame
+   stays put while its contents are replaced. */
+.slider__frame{
+  position:relative;overflow:hidden;
+  aspect-ratio:4/3;
+  background:rgba(255,255,255,.04);
+  box-shadow:0 30px 74px -38px rgba(0,0,0,.8);
 }
-.plate--hero::after{
-  content:"";position:absolute;inset:auto 0 0 0;height:46%;pointer-events:none;
-  background:linear-gradient(to top, rgba(14,10,6,.62), transparent);
+.slide{position:relative;width:100%;height:100%}
+.slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+.slide + .slide{margin-top:clamp(12px,1.6vw,20px)}  /* no-JS: a readable stack */
+
+.slider.is-enhanced .slider__frame{display:grid}
+.slider.is-enhanced .slide{
+  grid-area:1 / 1;margin:0;
+  opacity:0;visibility:hidden;pointer-events:none;
 }
-.plate__rule{
-  position:absolute;left:0;top:0;right:0;height:1px;z-index:3;
-  /* Drawn in by the soft reveal; it must still be present without JS, so the
-     resting state is the full rule and the tween starts from zero. */
-  background:var(--accent);transform-origin:left center;
+.slider.is-enhanced .slide.is-active{opacity:1;visibility:visible;pointer-events:auto}
+
+.slide figcaption{
+  position:absolute;z-index:2;
+  left:clamp(14px,2vw,26px);right:clamp(14px,2vw,26px);
+  bottom:clamp(11px,1.6vw,20px);
+  font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;
 }
-.plate__cap{
-  position:absolute;z-index:3;
-  left:clamp(14px,2vw,26px);bottom:clamp(11px,1.6vw,20px);
-  font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;
-  opacity:.8;
+.slide::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:44%;pointer-events:none;
+  background:linear-gradient(to top, rgba(14,10,6,.66), transparent);
 }
-.plate--offset{
-  grid-column:2 / span 2;aspect-ratio:7/8;
-  margin-top:clamp(-40px,-4vw,-14px);
-  outline:var(--rule) solid color-mix(in srgb, var(--fg) 16%, transparent);
-  outline-offset:-1px;
+
+.slider__tabs{display:none}
+.slider.is-enhanced .slider__tabs{
+  display:flex;gap:clamp(18px,3vw,40px);
+  margin-top:clamp(16px,2.2vw,26px);
 }
+.slider__tab{
+  appearance:none;-webkit-appearance:none;background:none;border:0;color:inherit;
+  font-family:inherit;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  display:flex;align-items:baseline;gap:.65em;white-space:nowrap;
+  padding:0 0 .8em;cursor:pointer;opacity:.45;position:relative;
+  transition:opacity var(--t-mid) var(--ease);
+}
+.slider__tab:hover{opacity:.8}
+.slider__tab.is-active{opacity:1}
+.slider__tab::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left center;
+  transition:transform var(--t-slow) var(--ease);
+}
+.slider__tab.is-active::after{transform:scaleX(1)}
+.slider__tabnum{font-variant-numeric:tabular-nums;color:var(--accent);opacity:.9}
+
 @media (max-width:899px){
-  /* Right half, so it never runs into the caption in the hero's bottom-left. */
-  .plate--offset{grid-column:3 / span 2;margin-top:clamp(-46px,-7vw,-18px)}
-}
-/* On a phone the panel earns the full width of the screen, and the second
-   plate has to be big enough to read as a deliberate overlap rather than a
-   small picture stranded beside an empty block of ground. */
-@media (max-width:759px){
-  .plate--hero{
-    margin-inline:calc(var(--gutter) * -1);
-    aspect-ratio:5/4;
-  }
-  .plate--offset{
-    /* Wide enough to hold the composition, and seated just clear of the
-       hero's caption: at this width the caption is 237px of the 375 on
-       offer, so any plate big enough to overlap it would sit on the words. */
-    grid-column:2 / -1;
-    margin-top:clamp(-16px,-2.5vw,-6px);
-    margin-right:calc(var(--gutter) * -1);
-  }
+  /* Full width on a phone: the frame is the chapter's picture, so it takes
+     the screen rather than sitting in a column with air beside it. */
+  .slider__frame{margin-inline:calc(var(--gutter) * -1);aspect-ratio:5/4}
+  .slider.is-enhanced .slider__tabs{margin-top:clamp(14px,3.4vw,20px)}
 }
 
 /* ---------- kitchen ----------
@@ -791,8 +803,15 @@ ul{margin:0;padding:0;list-style:none}
 .visit__note{font-size:.9rem;opacity:.66}
 .visit__note a{text-decoration:none;border-bottom:1px solid color-mix(in srgb, currentColor 45%, transparent)}
 .visit__note a:hover{color:var(--accent);border-bottom-color:var(--accent)}
-.visit__media{overflow:hidden}
-.visit__media img{width:100%;aspect-ratio:8/7;object-fit:cover}
+/* The sign is the brand mark: the frame keeps the photograph's own shape so
+   the wordmark is never cropped, and the curtain that opens it is the last
+   piece of motion on the page. */
+.visit__media{overflow:hidden;position:relative}
+.visit__media img{width:100%;height:auto;aspect-ratio:820/718;object-fit:cover}
+@media (max-width:899px){
+  .visit__media{margin-inline:calc(var(--gutter) * -1)}
+  .visit__media figcaption{padding-inline:var(--gutter)}
+}
 .visit__media figcaption{
   margin-top:1em;font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;opacity:.5;
 }

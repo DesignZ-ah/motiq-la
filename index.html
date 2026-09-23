@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609231520">
+<link rel="stylesheet" href="assets/css/style.css?v=202609231700">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -382,20 +382,36 @@
         </div>
       </div>
       <div class="hojicha__plates" data-soft-reveal>
-        <figure class="plate plate--hero" data-soft-item data-parallax-section>
-          <span class="plate__rule" data-soft-rule aria-hidden="true"></span>
-          <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
-               srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
-               sizes="(max-width: 899px) 100vw, 46vw"
-               alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692" data-parallax-image>
-          <figcaption class="plate__cap">Whisked to a fine, velvety foam</figcaption>
-        </figure>
-        <figure class="plate plate--offset" data-soft-item data-parallax-section>
-          <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
-               srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
-               sizes="(max-width: 899px) 60vw, 26vw"
-               alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640" data-parallax-image>
-        </figure>
+        <div class="slider" data-slider data-soft-item>
+          <div class="slider__frame">
+
+            <figure class="slide is-active" id="hojSlide1" role="tabpanel" aria-labelledby="hojTab1">
+              <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
+                   srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
+                   sizes="(max-width: 899px) 100vw, 46vw"
+                   alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692">
+              <figcaption>Whisked to a fine, velvety foam</figcaption>
+            </figure>
+
+            <figure class="slide" id="hojSlide2" role="tabpanel" aria-labelledby="hojTab2">
+              <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
+                   srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
+                   sizes="(max-width: 899px) 100vw, 46vw"
+                   alt="The base of an iced hojicha latte, roasted tea settling in a clean line over milk." loading="lazy" decoding="async" width="560" height="640">
+              <figcaption>Poured over ice, tea settling over milk</figcaption>
+            </figure>
+
+          </div>
+
+          <div class="slider__tabs" role="tablist" aria-label="Hojicha, served two ways">
+            <button class="slider__tab is-active" id="hojTab1" type="button" role="tab" aria-selected="true" aria-controls="hojSlide1" tabindex="0">
+              <span class="slider__tabnum" aria-hidden="true">01</span><span>Whisked</span>
+            </button>
+            <button class="slider__tab" id="hojTab2" type="button" role="tab" aria-selected="false" aria-controls="hojSlide2" tabindex="-1">
+              <span class="slider__tabnum" aria-hidden="true">02</span><span>Iced</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -596,12 +612,12 @@
         </p>
       </div>
 
-      <figure class="visit__media" data-image-reveal>
+      <figure class="visit__media" data-soft-reveal data-soft-clip data-soft-scale="1.09">
         <img src="video/posters/poster-storefront-sign-crop-1000.jpg"
              srcset="video/posters/poster-storefront-sign-crop-600.jpg 600w, video/posters/poster-storefront-sign-crop-1000.jpg 1000w"
              sizes="(max-width: 860px) 100vw, 44vw"
-             alt="The Motiq sign, a black script wordmark on a lit cream panel." loading="lazy" decoding="async" width="820" height="718">
-        <figcaption>Look for the sign by suite 201.</figcaption>
+             alt="The Motiq sign, a black script wordmark on a lit cream panel." loading="lazy" decoding="async" width="820" height="718" data-soft-item>
+        <figcaption data-soft-item>Look for the sign by suite 201.</figcaption>
       </figure>
     </div>
   </section>
@@ -680,6 +696,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609231520" defer></script>
+<script src="assets/js/main.js?v=202609231700" defer></script>
 </body>
 </html>
