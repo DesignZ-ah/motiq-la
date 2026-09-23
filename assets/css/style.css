@@ -545,28 +545,38 @@ ul{margin:0;padding:0;list-style:none}
 
 .espresso__strip{
   max-width:var(--maxw);margin:clamp(56px,8vw,110px) auto 0;
-  display:grid;gap:clamp(20px,3vw,44px);
+  display:grid;gap:clamp(24px,3.2vw,52px);
   grid-template-columns:minmax(0,1fr);align-items:center;
 }
-.espresso__still{overflow:hidden;aspect-ratio:3/4;background:rgba(255,255,255,.04)}
+.espresso__still{overflow:hidden;aspect-ratio:4/5;background:rgba(255,255,255,.04)}
 .espresso__still img{width:100%;height:100%;object-fit:cover}
+.espresso__strip .menu--bare .menu__list{gap:clamp(14px,1.6vw,20px)}
 @media (min-width:900px){
-  .espresso__strip{grid-template-columns:.62fr 1.1fr .62fr}
+  /* The two stills and the list between them carry equal weight; a 4/5 still
+     stands about as tall as six priced rows, so the row closes rather than
+     leaving a column of air beside the list. */
+  .espresso__strip{grid-template-columns:.8fr 1fr .8fr}
+}
+@media (max-width:899px){
+  .espresso__strip{grid-template-columns:1fr 1fr}
+  .espresso__strip .menu--bare{grid-column:1 / -1;order:-1}
 }
 
 /* ---------- hojicha ---------- */
 .hojicha{
   max-width:var(--maxw);margin:0 auto;
-  display:grid;gap:clamp(36px,5vw,80px);
+  display:grid;gap:clamp(34px,4.6vw,76px);
   grid-template-columns:minmax(0,1fr);align-items:center;
 }
 @media (min-width:900px){.hojicha{grid-template-columns:1fr 1fr}}
+.hojicha__copy{margin-top:clamp(18px,2.4vw,30px)}
+.hojicha__copy .menu__list--inline{margin-top:clamp(24px,3.2vw,40px)}
 .hojicha__plates{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.8vw,24px);align-items:start}
 .plate{position:relative;overflow:hidden;background:rgba(255,255,255,.04)}
 .plate img{width:100%;height:118%;object-fit:cover}
 
-/* The whisked bowl is the section's hero: a single wide panel, opened by a
-   shutter rather than dropped in. Everything else in the column is support. */
+/* The whisked bowl is the section's hero: a single wide panel that rises into
+   place on the chapter's shared beat. Everything else in the column supports it. */
 .plate--hero{
   grid-column:1 / -1;aspect-ratio:1080/692;
   box-shadow:0 28px 70px -34px rgba(0,0,0,.75);
@@ -577,7 +587,9 @@ ul{margin:0;padding:0;list-style:none}
 }
 .plate__rule{
   position:absolute;left:0;top:0;right:0;height:1px;z-index:3;
-  background:var(--accent);transform:scaleX(0);transform-origin:left center;
+  /* Drawn in by the soft reveal; it must still be present without JS, so the
+     resting state is the full rule and the tween starts from zero. */
+  background:var(--accent);transform-origin:left center;
 }
 .plate__cap{
   position:absolute;z-index:3;
@@ -595,27 +607,74 @@ ul{margin:0;padding:0;list-style:none}
   /* Right half, so it never runs into the caption in the hero's bottom-left. */
   .plate--offset{grid-column:3 / span 2;margin-top:clamp(-46px,-7vw,-18px)}
 }
-/* On a phone the panel earns the full width of the screen. */
+/* On a phone the panel earns the full width of the screen, and the second
+   plate has to be big enough to read as a deliberate overlap rather than a
+   small picture stranded beside an empty block of ground. */
 @media (max-width:759px){
   .plate--hero{
     margin-inline:calc(var(--gutter) * -1);
     aspect-ratio:5/4;
   }
-  .plate--offset{margin-right:calc(var(--gutter) * -1)}
+  .plate--offset{
+    /* Wide enough to hold the composition, and seated just clear of the
+       hero's caption: at this width the caption is 237px of the 375 on
+       offer, so any plate big enough to overlap it would sit on the words. */
+    grid-column:2 / -1;
+    margin-top:clamp(-16px,-2.5vw,-6px);
+    margin-right:calc(var(--gutter) * -1);
+  }
 }
 
-/* ---------- kitchen ---------- */
+/* ---------- kitchen ----------
+   The dishes were shot as cutouts and flattened onto this chapter's own
+   ground, so they sit on the page as plates on a dark table rather than as
+   cropped photographs in boxes. Nothing is framed and nothing is cropped:
+   every plate is whole, at its own proportions. */
 .kitchen{
   max-width:var(--maxw);margin:0 auto;
-  display:grid;gap:clamp(34px,4vw,70px);
-  grid-template-columns:minmax(0,1fr);align-items:start;
+  display:grid;gap:clamp(56px,7vw,112px);
 }
-@media (min-width:1000px){.kitchen{grid-template-columns:.78fr 1.22fr}}
-.kitchen__media{overflow:hidden;aspect-ratio:3/4;position:sticky;top:clamp(90px,12vh,120px)}
-.kitchen__media img{width:100%;height:112%;object-fit:cover}
-@media (max-width:999px){.kitchen__media{position:static;aspect-ratio:4/3}}
-.kitchen__menu{display:grid;gap:clamp(36px,5vw,64px)}
-.kitchen__menu .menu{margin-top:0}
+.course{display:grid;gap:clamp(26px,3vw,40px)}
+.course .menu__cat{margin-bottom:0;padding-bottom:1em}
+
+.dishes{
+  display:grid;gap:clamp(30px,3.6vw,56px) clamp(24px,3vw,48px);
+  grid-template-columns:minmax(0,1fr);
+}
+@media (min-width:700px){.dishes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1040px){.dishes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.dish{display:flex;flex-direction:column}
+.dish__media{
+  /* One ratio across the row so the names line up, `contain` inside it so no
+     plate is ever clipped. The letterboxing is the section's own colour, so
+     the box itself is invisible.
+
+     The picture is taken out of flow: left in flow, a tall plate's intrinsic
+     height wins over aspect-ratio and the row stops aligning. */
+  position:relative;aspect-ratio:3/2;margin-bottom:clamp(12px,1.4vw,20px);
+}
+.dish__media img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:contain;object-position:center bottom;
+}
+.dish .menu__row{align-items:baseline}
+.dish__desc{
+  margin-top:.5em;font-size:.9rem;line-height:1.55;opacity:.64;max-width:42ch;
+}
+
+/* The items with no photograph keep the plain name-and-price row. */
+.course__rest{
+  padding-top:clamp(22px,2.6vw,34px);
+  border-top:var(--rule) solid color-mix(in srgb, currentColor 14%, transparent);
+}
+@media (min-width:760px){
+  .course__rest{grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px) clamp(36px,6vw,96px)}
+}
+.course__rest--rows{padding-top:0;border-top:0}
+@media (max-width:699px){
+  .dish__media{aspect-ratio:16/10}
+}
 
 /* ---------- the room ---------- */
 .wide{
@@ -736,13 +795,14 @@ html.has-motion [data-motion-text],
 html.has-motion [data-reveal],
 html.has-motion [data-reveal-group],
 html.has-motion [data-image-reveal],
-html.has-motion [data-cinema-reveal],
-html.has-motion [data-panel-reveal]{visibility:hidden}
+html.has-motion [data-soft-reveal]{visibility:hidden}
 
 .motion-line-mask,.motion-word-mask{display:inline-block;overflow:hidden;vertical-align:top}
 .motion-line,.motion-word{display:inline-block;will-change:transform,opacity}
-[data-image-reveal],[data-cinema-reveal]{overflow:hidden}
-[data-cinema-reveal] img{will-change:transform,filter}
+[data-image-reveal]{overflow:hidden}
+/* A soft-revealed item animates transform and opacity only, and stops when it
+   settles: retire() strips the inline state once the tween is done. */
+[data-soft-item] img{will-change:transform}
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -750,8 +810,7 @@ html.has-motion [data-panel-reveal]{visibility:hidden}
   html.has-motion [data-reveal],
   html.has-motion [data-reveal-group],
   html.has-motion [data-image-reveal],
-  html.has-motion [data-cinema-reveal],
-  html.has-motion [data-panel-reveal]{visibility:visible !important}
+  html.has-motion [data-soft-reveal]{visibility:visible !important}
   *,*::before,*::after{
     animation-duration:.001ms !important;animation-iteration-count:1 !important;
     transition-duration:.001ms !important;
@@ -778,15 +837,4 @@ html.has-motion [data-panel-reveal]{visibility:hidden}
   .menu__price{margin-left:auto}
 }
 
-/* kitchen media captions + editorial break */
-.kitchen__media{display:flex;flex-direction:column}
-.kitchen__media img{flex:1 1 auto}
-.kitchen__media figcaption,.kitchen__break figcaption{
-  margin-top:.9em;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;opacity:.5;
-}
-.kitchen__break{overflow:hidden}
-.kitchen__break img{width:100%;aspect-ratio:1/1;object-fit:cover}
-@media (min-width:1000px){
-  .kitchen__media{position:sticky;top:clamp(90px,12vh,120px);aspect-ratio:auto}
-  .kitchen__media img{aspect-ratio:5/6;object-fit:cover;height:auto}
-}
+

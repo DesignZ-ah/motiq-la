@@ -556,7 +556,7 @@
     if (themed.length) applyTheme(themed[0]);
 
     if (reduceMotion) {
-      gsap.set('[data-motion-text],[data-reveal],[data-reveal-group],[data-image-reveal],[data-cinema-reveal],[data-panel-reveal]', { autoAlpha: 1, clearProps: 'visibility,opacity' });
+      gsap.set('[data-motion-text],[data-reveal],[data-reveal-group],[data-image-reveal],[data-soft-reveal]', { autoAlpha: 1, clearProps: 'visibility,opacity' });
       ScrollTrigger.refresh();
       return;
     }
@@ -667,6 +667,56 @@
         }), el);
     });
 
+    /* -- soft reveals: one shared gesture for the espresso, hojicha and
+       kitchen chapters. A photograph and the words beside it rise together
+       into full opacity, the picture settling out of a little scale on the
+       same beat, so the three chapters read as one continuous passage rather
+       than three different tricks.
+
+       The tween is deliberately quick relative to its trigger: it starts as
+       the group crosses 85% of the viewport and is finished long before the
+       content is centred, so a reader never watches something still arriving
+       in the middle of the screen. Playing once, forwards only, means
+       scrolling back up never fades the page out again. */
+    gsap.utils.toArray('[data-soft-reveal]').forEach(function (group) {
+      var items = gsap.utils.toArray(group.querySelectorAll('[data-soft-item]'));
+      if (!items.length) items = [group];
+      gsap.set(group, { autoAlpha: 1 });
+
+      // A cutout sitting on the page's own ground has no frame to be clipped
+      // by, so it grows into place; a photograph inside a frame settles down
+      // out of an overscale the frame crops.
+      var scaleFrom = Number(group.dataset.softScale || 1.06);
+      var imgs = [];
+      items.forEach(function (item) {
+        var img = item.matches('img') ? item : item.querySelector('img');
+        if (img) imgs.push(img);
+      });
+
+      var tl = gsap.timeline({
+        scrollTrigger: { trigger: group, start: 'top 85%', once: true }
+      });
+      tl.fromTo(items,
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.05, ease: 'power3.out', stagger: 0.09 }, 0);
+      if (imgs.length && scaleFrom !== 1) {
+        tl.fromTo(imgs,
+          { scale: scaleFrom },
+          { scale: 1, duration: 1.45, ease: 'power3.out', stagger: 0.09 }, 0);
+      }
+
+      // An accent hairline may draw across on the same beat. It is the only
+      // flourish the soft grammar allows, and it stays subordinate to the rise.
+      var rules = gsap.utils.toArray(group.querySelectorAll('[data-soft-rule]'));
+      if (rules.length) {
+        tl.fromTo(rules,
+          { scaleX: 0 },
+          { scaleX: 1, duration: 1.1, ease: 'power3.out', clearProps: 'transform' }, 0.12);
+      }
+
+      retire(tl, items.concat(imgs));
+    });
+
     /* -- image reveals: the frame opens, the picture settles -- */
     gsap.utils.toArray('[data-image-reveal]').forEach(function (figure) {
       var img = figure.querySelector('img');
@@ -683,65 +733,7 @@
       retire(tl, img ? [figure, img] : [figure]);
     });
 
-    /* -- cinematic reveals: the signature stage and the hojicha plates get
-       a slower focus-pull open instead of the standard clip wipe -- */
-    gsap.utils.toArray('[data-cinema-reveal]').forEach(function (figure) {
-      var img = figure.querySelector('img');
-      var delay = Number(figure.dataset.revealDelay || 0);
-      gsap.set(figure, { autoAlpha: 1 });
-      var tl = gsap.timeline({
-        delay: delay,
-        scrollTrigger: { trigger: figure, start: 'top 85%', once: true }
-      });
-      tl.fromTo(figure,
-        { clipPath: 'inset(15% 15% 15% 15%)' },
-        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.out', clearProps: 'clipPath' }, 0);
-      if (img) {
-        tl.fromTo(img,
-          { scale: 1.24, autoAlpha: 0, filter: 'blur(16px)' },
-          { scale: 1.07, autoAlpha: 1, filter: 'blur(0px)', duration: 1.35, ease: 'power4.out', clearProps: 'filter' }, 0.05)
-          .to(img, { scale: 1, duration: 1, ease: 'power2.out' }, 1.05);
-      }
-      retire(tl, img ? [figure, img] : [figure]);
-    });
 
-    /* -- hero panel: an accent rule draws, then a shutter opens from the
-          horizon line and the photograph settles out of its own scale -- */
-    gsap.utils.toArray('[data-panel-reveal]').forEach(function (figure) {
-      var img = figure.querySelector('img');
-      var rule = figure.querySelector('.plate__rule');
-      var cap = figure.querySelector('.plate__cap');
-      gsap.set(figure, { autoAlpha: 1 });
-
-      var tl = gsap.timeline({
-        scrollTrigger: { trigger: figure, start: 'top 84%', once: true }
-      });
-
-      if (rule) {
-        tl.fromTo(rule,
-          { scaleX: 0 },
-          { scaleX: 1, duration: 0.9, ease: 'expo.out', clearProps: 'transform' }, 0);
-      }
-      tl.fromTo(figure,
-        { clipPath: 'inset(50% 0% 50% 0%)' },
-        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.45, ease: 'expo.out', clearProps: 'clipPath' }, 0.18);
-      if (img) {
-        tl.fromTo(img,
-          { scale: 1.3, filter: 'blur(14px)' },
-          { scale: 1.06, filter: 'blur(0px)', duration: 1.9, ease: 'power4.out', clearProps: 'filter' }, 0.18)
-          .to(img, { scale: 1, duration: 1.1, ease: 'power2.out' }, 1.5);
-      }
-      if (cap) {
-        tl.fromTo(cap,
-          { y: 14, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.8, ease: 'power3.out', clearProps: 'transform' }, 0.95);
-      }
-
-      var targets = [figure];
-      if (img) targets.push(img);
-      if (cap) targets.push(cap);
-      retire(tl, targets);
-    });
 
     /* -- restrained parallax inside a few frames only -- */
     gsap.utils.toArray('[data-parallax-image]').forEach(function (img) {

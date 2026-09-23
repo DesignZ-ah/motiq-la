@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609221710">
+<link rel="stylesheet" href="assets/css/style.css?v=202609231205">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -273,8 +273,8 @@
       <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.1">Origin, roast and process, published the way a roastery would. Pick the one that suits the cup you are after.</p>
     </header>
 
-    <div class="beans">
-      <article class="bean" data-reveal="fade-up">
+    <div class="beans" data-soft-reveal>
+      <article class="bean" data-soft-item>
         <p class="bean__label">Signature espresso</p>
         <h3 class="bean__name">01 Bright</h3>
         <dl class="bean__spec">
@@ -286,14 +286,14 @@
         <p class="bean__triad">Balanced &middot; Sweet &middot; Bright</p>
       </article>
 
-      <figure class="bean__media" data-image-reveal data-parallax-section>
+      <figure class="bean__media" data-soft-item data-parallax-section>
         <img src="images/espresso/espresso-extraction-portafilter-1000.jpg"
              srcset="images/espresso/espresso-extraction-portafilter-600.jpg 600w, images/espresso/espresso-extraction-portafilter-1000.jpg 1000w"
              sizes="(max-width: 860px) 100vw, 32vw"
              alt="Espresso running from the portafilter into a steel pitcher." loading="lazy" decoding="async" width="1080" height="1440" data-parallax-image>
       </figure>
 
-      <article class="bean" data-reveal="fade-up" data-reveal-delay="0.08">
+      <article class="bean" data-soft-item>
         <p class="bean__label">Signature espresso</p>
         <h3 class="bean__name">02 Bold</h3>
         <dl class="bean__spec">
@@ -306,24 +306,25 @@
       </article>
     </div>
 
-    <div class="espresso__strip">
-      <figure class="espresso__still" data-image-reveal>
+    <div class="espresso__strip" data-soft-reveal>
+      <figure class="espresso__still" data-soft-item>
         <img src="images/espresso/espresso-shot-ribbed-glass-1000.jpg"
              srcset="images/espresso/espresso-shot-ribbed-glass-600.jpg 600w, images/espresso/espresso-shot-ribbed-glass-1000.jpg 1000w"
              sizes="(max-width: 860px) 50vw, 26vw"
              alt="A single espresso in a ribbed glass, lit from one side on a black surface." loading="lazy" decoding="async" width="1080" height="1440">
       </figure>
-      <div class="menu menu--bare" data-reveal-group>
+      <div class="menu menu--bare" data-soft-item>
+        <p class="menu__cat">Coffee</p>
         <ul class="menu__list">
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Espresso</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$4.50</span></div></li>
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Americano</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$5.50</span></div></li>
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Cappuccino <em>hot only</em></h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.00</span></div></li>
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.00</span></div></li>
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Vanilla Bean Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div></li>
-          <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Honey Oat Latte <em>oat milk only</em></h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Espresso</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$4.50</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Americano</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$5.50</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Cappuccino <em>hot only</em></h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.00</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.00</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Vanilla Bean Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div></li>
+          <li class="menu__item menu__item--row"><div class="menu__row"><h3>Honey Oat Latte <em>oat milk only</em></h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div></li>
         </ul>
       </div>
-      <figure class="espresso__still" data-image-reveal>
+      <figure class="espresso__still" data-soft-item>
         <img src="images/espresso/coffee-beans-kraft-bag-1000.jpg"
              srcset="images/espresso/coffee-beans-kraft-bag-600.jpg 600w, images/espresso/coffee-beans-kraft-bag-1000.jpg 1000w"
              sizes="(max-width: 860px) 50vw, 26vw"
@@ -338,28 +339,30 @@
       <div class="hojicha__text">
         <p class="eyebrow" data-reveal="fade-up">04 &mdash; Roasted green tea</p>
         <h2 class="chapter__title" data-motion-text="words">Hojicha, from Uji.</h2>
-        <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.08">Warm notes of caramel, roasted rice and brown sugar. Smooth and round&#8209;bodied, with a nutty sweetness and a soft, comforting finish.</p>
-        <ul class="menu__list menu__list--inline" data-reveal-group>
-          <li class="menu__item" data-reveal-item>
+        <div class="hojicha__copy" data-soft-reveal data-soft-scale="1">
+        <p class="chapter__lede" data-soft-item>Warm notes of caramel, roasted rice and brown sugar. Smooth and round&#8209;bodied, with a nutty sweetness and a soft, comforting finish.</p>
+        <ul class="menu__list menu__list--inline">
+          <li class="menu__item" data-soft-item>
             <div class="menu__row"><h3>Hojicha Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div>
             <p>Roasted green tea latte with warm nutty notes, soft chocolate depth and a smooth finish.</p>
           </li>
-          <li class="menu__item" data-reveal-item>
+          <li class="menu__item" data-soft-item>
             <div class="menu__row"><h3>Chestnut Hojicha Cream Latte</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.25</span></div>
             <p>Roasted hojicha layered with chestnut cream for a rich, nutty, dessert&#8209;like finish.</p>
           </li>
         </ul>
+        </div>
       </div>
-      <div class="hojicha__plates">
-        <figure class="plate plate--hero" data-panel-reveal data-parallax-section>
-          <span class="plate__rule" aria-hidden="true"></span>
+      <div class="hojicha__plates" data-soft-reveal>
+        <figure class="plate plate--hero" data-soft-item data-parallax-section>
+          <span class="plate__rule" data-soft-rule aria-hidden="true"></span>
           <img src="images/hojicha/hojicha-bowl-whisk-1000.jpg"
                srcset="images/hojicha/hojicha-bowl-whisk-600.jpg 600w, images/hojicha/hojicha-bowl-whisk-1000.jpg 1000w, images/hojicha/hojicha-bowl-whisk-1080.jpg 1080w"
                sizes="(max-width: 899px) 100vw, 46vw"
                alt="Hojicha whisked to a fine foam in a pale ceramic bowl, the tips of a bamboo chasen still resting in the cup." loading="lazy" decoding="async" width="1080" height="692" data-parallax-image>
           <figcaption class="plate__cap">Whisked to a fine, velvety foam</figcaption>
         </figure>
-        <figure class="plate plate--offset" data-cinema-reveal data-parallax-section data-reveal-delay="0.12">
+        <figure class="plate plate--offset" data-soft-item data-parallax-section>
           <img src="images/hojicha/hojicha-iced-latte-1000.jpg"
                srcset="images/hojicha/hojicha-iced-latte-600.jpg 600w, images/hojicha/hojicha-iced-latte-1000.jpg 1000w"
                sizes="(max-width: 899px) 60vw, 26vw"
@@ -380,57 +383,113 @@
     </header>
 
     <div class="kitchen">
-      <figure class="kitchen__media" data-image-reveal data-parallax-section>
-        <img src="images/food/kimchi-fried-rice-1000.jpg"
-             srcset="images/food/kimchi-fried-rice-600.jpg 600w, images/food/kimchi-fried-rice-1000.jpg 1000w"
-             sizes="(max-width: 999px) 100vw, 38vw"
-             alt="Kimchi fried rice, overhead: red-orange rice under a fried egg with shredded nori, gochujang and an arugula salad." loading="lazy" decoding="async" width="740" height="880" data-parallax-image>
-        <figcaption>Kimchi Fried Rice &mdash; $16.00</figcaption>
-      </figure>
 
-      <div class="kitchen__menu">
-        <div class="menu" data-reveal-group>
-          <p class="menu__cat">Brunch</p>
-          <ul class="menu__list">
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Breakfast Burrito</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div><p>House&#8209;made flour tortilla filled with crispy bacon, pasture&#8209;raised eggs, golden hash browns, creamy avocado and melted cheddar.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Breakfast Plate</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div><p>Two eggs cooked your way, crispy bacon, toasted bread and golden potato tots.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Avocado Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div><p>Creamy mashed avocado with fresh herbs, tomatoes and radish on toasted rosemary bread with a sunny side egg.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Burrata Prosciutto Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div><p>Burrata and prosciutto over pesto on toasted ciabatta, finished with balsamic, cracked pepper and truffle oil.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>French Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$9.50</span></div><p>Thick&#8209;cut brioche dipped in vanilla custard, griddled golden, powdered sugar and maple syrup.</p></li>
-          </ul>
-        </div>
+      <div class="course">
+        <p class="menu__cat">Brunch</p>
 
-        <figure class="kitchen__break" data-image-reveal>
-          <img src="images/food/fettuccine-alfredo-1000.jpg"
-               srcset="images/food/fettuccine-alfredo-600.jpg 600w, images/food/fettuccine-alfredo-1000.jpg 1000w"
-               sizes="(max-width: 999px) 100vw, 56vw"
-               alt="Fettuccine alfredo with shrimp, overhead on a wide cream plate." loading="lazy" decoding="async" width="730" height="740">
-          <figcaption>Fettuccine Alfredo &mdash; $17.00</figcaption>
-        </figure>
+        <ul class="dishes" data-soft-reveal data-soft-scale="0.985">
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-breakfast-burrito-780.jpg"
+                   srcset="images/food/dish-breakfast-burrito-520.jpg 520w, images/food/dish-breakfast-burrito-780.jpg 780w, images/food/dish-breakfast-burrito-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Breakfast burrito cut in half on a rimmed plate, showing scrambled egg, bacon and avocado, with salsa, pickles and tortilla chips alongside."
+                   loading="lazy" decoding="async" width="780" height="494">
+            </figure>
+            <div class="menu__row"><h3>Breakfast Burrito</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div>
+            <p class="dish__desc">House&#8209;made flour tortilla filled with crispy bacon, pasture&#8209;raised eggs, golden hash browns, creamy avocado and melted cheddar.</p>
+          </li>
 
-        <div class="menu" data-reveal-group>
-          <p class="menu__cat">Rice &amp; pasta</p>
-          <ul class="menu__list">
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Kimchi Carbonara Pasta</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div><p>A rich, creamy carbonara&#8209;style pasta with seasoned kimchi for a bold, savory kick.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Kimchi Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div><p>Savory house&#8209;fermented kimchi stir&#8209;fried with rice and Spam, topped with a sunny&#8209;side&#8209;up egg and spring onions.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Spam Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div><p>Golden fried rice with Spam, eggs, scallions and aromatic seasonings.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Steve&rsquo;s Bolognese</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div><p>Beef rag&ugrave; slow&#8209;simmered for deep flavour, served with spaghetti and shaved Parmigiano.</p></li>
-            <li class="menu__item" data-reveal-item><div class="menu__row"><h3>Fettuccine Alfredo</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div><p>Silky house&#8209;made Alfredo tossed with fettuccine, with your choice of chicken or shrimp.</p></li>
-          </ul>
-        </div>
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-avocado-toast-780.jpg"
+                   srcset="images/food/dish-avocado-toast-520.jpg 520w, images/food/dish-avocado-toast-780.jpg 780w, images/food/dish-avocado-toast-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Avocado toast on a rimmed plate: mashed avocado over dark rye under a sunny side egg, with cherry tomatoes and microgreens."
+                   loading="lazy" decoding="async" width="780" height="463">
+            </figure>
+            <div class="menu__row"><h3>Avocado Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div>
+            <p class="dish__desc">Creamy mashed avocado with fresh herbs, tomatoes and radish on toasted rosemary bread with a sunny side egg.</p>
+          </li>
 
-        <div class="menu" data-reveal-group>
-          <p class="menu__cat">Sandwiches &amp; more</p>
-          <ul class="menu__list menu__list--compact">
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Garlic Butter Chicken Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Turkey Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Italian Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Motiq Signature Burger</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Chicken Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div></li>
-            <li class="menu__item menu__item--row" data-reveal-item><div class="menu__row"><h3>Chicken Noodle Soup</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.00</span></div></li>
-          </ul>
-        </div>
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-burrata-prosciutto-780.jpg"
+                   srcset="images/food/dish-burrata-prosciutto-520.jpg 520w, images/food/dish-burrata-prosciutto-780.jpg 780w, images/food/dish-burrata-prosciutto-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Burrata and prosciutto toast on a rimmed plate, with cherry tomatoes, microgreens and a balsamic drizzle."
+                   loading="lazy" decoding="async" width="780" height="667">
+            </figure>
+            <div class="menu__row"><h3>Burrata Prosciutto Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div>
+            <p class="dish__desc">Burrata and prosciutto over pesto on toasted ciabatta, finished with balsamic, cracked pepper and truffle oil.</p>
+          </li>
+        </ul>
+
+        <ul class="menu__list course__rest" data-soft-reveal data-soft-scale="1">
+          <li class="menu__item" data-soft-item><div class="menu__row"><h3>Breakfast Plate</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$15.00</span></div><p>Two eggs cooked your way, crispy bacon, toasted bread and golden potato tots.</p></li>
+          <li class="menu__item" data-soft-item><div class="menu__row"><h3>French Toast</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$9.50</span></div><p>Thick&#8209;cut brioche dipped in vanilla custard, griddled golden, powdered sugar and maple syrup.</p></li>
+        </ul>
       </div>
+
+      <div class="course">
+        <p class="menu__cat">Rice &amp; pasta</p>
+
+        <ul class="dishes" data-soft-reveal data-soft-scale="0.985">
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-kimchi-carbonara-780.jpg"
+                   srcset="images/food/dish-kimchi-carbonara-520.jpg 520w, images/food/dish-kimchi-carbonara-780.jpg 780w, images/food/dish-kimchi-carbonara-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Kimchi carbonara in a creamy red-orange sauce, finished with chilli flakes and chopped herbs, with sliced pickles alongside."
+                   loading="lazy" decoding="async" width="780" height="621">
+            </figure>
+            <div class="menu__row"><h3>Kimchi Carbonara Pasta</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div>
+            <p class="dish__desc">A rich, creamy carbonara&#8209;style pasta with seasoned kimchi for a bold, savory kick.</p>
+          </li>
+
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-kimchi-fried-rice-780.jpg"
+                   srcset="images/food/dish-kimchi-fried-rice-520.jpg 520w, images/food/dish-kimchi-fried-rice-780.jpg 780w, images/food/dish-kimchi-fried-rice-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Kimchi fried rice under a sunny-side-up egg, with shredded nori, gochujang, arugula and pickles on the rim."
+                   loading="lazy" decoding="async" width="780" height="650">
+            </figure>
+            <div class="menu__row"><h3>Kimchi Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div>
+            <p class="dish__desc">Savory house&#8209;fermented kimchi stir&#8209;fried with rice and Spam, topped with a sunny&#8209;side&#8209;up egg and spring onions.</p>
+          </li>
+
+          <li class="dish" data-soft-item>
+            <figure class="dish__media">
+              <img src="images/food/dish-fettuccine-alfredo-780.jpg"
+                   srcset="images/food/dish-fettuccine-alfredo-520.jpg 520w, images/food/dish-fettuccine-alfredo-780.jpg 780w, images/food/dish-fettuccine-alfredo-1040.jpg 1040w"
+                   sizes="(max-width: 699px) 88vw, (max-width: 1039px) 44vw, 30vw"
+                   alt="Fettuccine alfredo with shrimp in a cream sauce, scattered with parsley, pickles alongside."
+                   loading="lazy" decoding="async" width="780" height="507">
+            </figure>
+            <div class="menu__row"><h3>Fettuccine Alfredo</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div>
+            <p class="dish__desc">Silky house&#8209;made Alfredo tossed with fettuccine, with your choice of chicken or shrimp.</p>
+          </li>
+        </ul>
+
+        <ul class="menu__list course__rest" data-soft-reveal data-soft-scale="1">
+          <li class="menu__item" data-soft-item><div class="menu__row"><h3>Spam Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div><p>Golden fried rice with Spam, eggs, scallions and aromatic seasonings.</p></li>
+          <li class="menu__item" data-soft-item><div class="menu__row"><h3>Steve&rsquo;s Bolognese</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$17.00</span></div><p>Beef rag&ugrave; slow&#8209;simmered for deep flavour, served with spaghetti and shaved Parmigiano.</p></li>
+        </ul>
+      </div>
+
+      <div class="course">
+        <p class="menu__cat">Sandwiches &amp; more</p>
+        <ul class="menu__list course__rest course__rest--rows" data-soft-reveal data-soft-scale="1">
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Garlic Butter Chicken Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Turkey Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Italian Sandwich</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Motiq Signature Burger</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$14.00</span></div></li>
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Chicken Fried Rice</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$16.00</span></div></li>
+          <li class="menu__item menu__item--row" data-soft-item><div class="menu__row"><h3>Chicken Noodle Soup</h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$7.00</span></div></li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
@@ -593,6 +652,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609221710" defer></script>
+<script src="assets/js/main.js?v=202609231205" defer></script>
 </body>
 </html>
