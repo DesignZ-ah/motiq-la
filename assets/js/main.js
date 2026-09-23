@@ -230,48 +230,132 @@
      only appears once this has taken over.
      --------------------------------------------------------------------- */
   /* ---------------------------------------------------------------------
-     SIGNATURE SEQUENCE — scroll conducts the cream tops
+     SEQUENCE — scroll walks a sticky track, one panel at a time
 
-     The track is a tall block of ordinary page; the stage inside it is
-     sticky. Scrolling through the track moves from the first drink to the
-     second to the third, then releases and the page carries on. Layout
-     height is entirely CSS-driven, so nothing here can park a reveal by
-     changing the document after ScrollTrigger has measured it.
+     Used by the cream tops and by the espresso beans. The track is a tall
+     block of ordinary page; the stage inside it is sticky. Scrolling through
+     the track moves from the first panel to the last, then releases and the
+     page carries on. Layout height is entirely CSS-driven, so nothing here
+     can park a reveal by changing the document after ScrollTrigger measured.
+
+     The machinery is shared; the entrance is not. Each block names its own
+     reveal through data-seq-reveal, because a cut-out drink standing on the
+     page and a framed photograph shot with one hard light do not want to
+     arrive the same way.
      --------------------------------------------------------------------- */
 
-  // Without GSAP, or under reduced motion, the drinks are simply a stack of
-  // three articles. Strip the tab wiring so assistive technology is not told
-  // about a tablist that no longer controls anything.
-  function demoteSignature() {
-    var block = document.querySelector('[data-signature]');
-    if (!block) return;
-    var rail = block.querySelector('.signature__rail');
+  // Without GSAP, or under reduced motion, a sequence is simply a stack of
+  // articles. Strip the tab wiring so assistive technology is not told about
+  // a tablist that no longer controls anything.
+  function demoteSequence(block) {
+    var rail = block.querySelector('.seq__rail');
     if (rail) rail.remove();
-    block.querySelectorAll('.sig-item').forEach(function (item) {
+    block.querySelectorAll('.seq__item').forEach(function (item) {
       item.removeAttribute('role');
       item.removeAttribute('aria-labelledby');
       item.classList.remove('is-active');
     });
   }
 
-  function initSignature() {
-    var block = document.querySelector('[data-signature]');
-    if (!block) return;
+  /* -- entrances ------------------------------------------------------- */
 
-    if (!hasGSAP || reduceMotion) { demoteSignature(); return; }
+  // Cream top: the drink crossfades in and settles out of a little scale,
+  // its ghost numeral rising behind the name.
+  function revealCrossfade(item) {
+    var gsap = window.gsap;
+    var media = item.querySelector('.seq__media img');
+    var numeral = item.querySelector('.sig-item__num');
+    var text = item.querySelectorAll('.sig-item__index, .sig-item__name, .sig-item__desc, .sig-item__price');
+    var tl = gsap.timeline();
 
-    var stage = block.querySelector('[data-sig-stage]');
-    var panels = block.querySelector('.signature__panels');
-    var items = Array.prototype.slice.call(block.querySelectorAll('.sig-item'));
-    var tabs = Array.prototype.slice.call(block.querySelectorAll('.sig-tab'));
-    var indicator = block.querySelector('.signature__indicator');
+    if (media) {
+      tl.fromTo(media,
+        { scale: 1.12, yPercent: 4, opacity: 0.25 },
+        { scale: 1, yPercent: 0, opacity: 1, duration: 1.15, ease: 'power4.out',
+          clearProps: 'transform,opacity' }, 0);
+    }
+    if (numeral) {
+      tl.fromTo(numeral,
+        { y: 34, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power4.out',
+          clearProps: 'transform,opacity' }, 0.1);
+    }
+    tl.fromTo(text,
+      { y: 26, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.85, ease: 'power4.out', stagger: 0.06,
+        clearProps: 'transform,opacity' }, 0.12);
+    return tl;
+  }
+
+  // Espresso: the frame is lit. The photograph arrives dark and out of focus
+  // and is brought up as a band of light travels across it — a focus pull
+  // under a moving key light, which is how these two were shot in the first
+  // place. The specification types in underneath, a line at a time.
+  function revealFocus(item) {
+    var gsap = window.gsap;
+    var media = item.querySelector('.seq__media img');
+    var sweep = item.querySelector('.seq__sweep');
+    var label = item.querySelector('.bean__label');
+    var name = item.querySelector('.bean__name');
+    var rows = item.querySelectorAll('.bean__spec > div');
+    var triad = item.querySelector('.bean__triad');
+    var tl = gsap.timeline();
+
+    if (media) {
+      tl.fromTo(media,
+        { scale: 1.14, filter: 'blur(11px) brightness(0.34) saturate(0.55)' },
+        { scale: 1, filter: 'blur(0px) brightness(1) saturate(1)',
+          duration: 1.5, ease: 'power3.out', clearProps: 'transform,filter' }, 0);
+    }
+    if (sweep) {
+      // One pass, left to right, fading out as it leaves. It never rests
+      // visible, so nothing is left sitting on the photograph.
+      tl.fromTo(sweep,
+        { xPercent: -130, rotate: 8, opacity: 0 },
+        { xPercent: 10, opacity: 1, duration: 0.62, ease: 'power2.out' }, 0.1)
+        .to(sweep,
+          { xPercent: 185, opacity: 0, duration: 0.86, ease: 'power2.in',
+            clearProps: 'transform,opacity' }, 0.72);
+    }
+
+    var lines = [];
+    if (label) lines.push(label);
+    if (name) lines.push(name);
+    Array.prototype.push.apply(lines, Array.prototype.slice.call(rows));
+    if (triad) lines.push(triad);
+    if (lines.length) {
+      tl.fromTo(lines,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power4.out', stagger: 0.055,
+          clearProps: 'transform,opacity' }, 0.22);
+    }
+    return tl;
+  }
+
+  var SEQ_REVEALS = { crossfade: revealCrossfade, focus: revealFocus };
+
+  function initSequences() {
+    var blocks = Array.prototype.slice.call(document.querySelectorAll('[data-sequence]'));
+    blocks.forEach(function (block) {
+      if (!hasGSAP || reduceMotion) { demoteSequence(block); return; }
+      initSequence(block);
+    });
+  }
+
+  function initSequence(block) {
+    var stage = block.querySelector('.seq__stage');
+    var panels = block.querySelector('.seq__panels');
+    var items = Array.prototype.slice.call(block.querySelectorAll('.seq__item'));
+    var tabs = Array.prototype.slice.call(block.querySelectorAll('.seq-tab'));
+    var indicator = block.querySelector('.seq__indicator');
     if (!stage || !panels || items.length < 2 || tabs.length !== items.length) {
-      demoteSignature();
+      demoteSequence(block);
       return;
     }
 
     var gsap = window.gsap;
     var ScrollTrigger = window.ScrollTrigger;
+    var reveal = SEQ_REVEALS[block.dataset.seqReveal] || revealCrossfade;
     var count = items.length;
     var current = 0;
     var settleTimer = 0;
@@ -293,7 +377,6 @@
       }
     }
 
-    /* -- the swap ------------------------------------------------------- */
     function markTabs() {
       tabs.forEach(function (tab, i) {
         var on = i === current;
@@ -315,31 +398,6 @@
       gsap.set(items, { clearProps: 'opacity' });
     }
 
-    function reveal(item, delay) {
-      var media = item.querySelector('.sig-item__media img');
-      var numeral = item.querySelector('.sig-item__num');
-      var text = item.querySelectorAll('.sig-item__index, .sig-item__name, .sig-item__desc, .sig-item__price');
-      var tl = gsap.timeline({ delay: delay || 0 });
-
-      if (media) {
-        tl.fromTo(media,
-          { scale: 1.12, yPercent: 4, opacity: 0.25 },
-          { scale: 1, yPercent: 0, opacity: 1, duration: 1.15, ease: 'power4.out',
-            clearProps: 'transform,opacity' }, 0);
-      }
-      if (numeral) {
-        tl.fromTo(numeral,
-          { y: 34, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.9, ease: 'power4.out',
-            clearProps: 'transform,opacity' }, 0.1);
-      }
-      tl.fromTo(text,
-        { y: 26, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.85, ease: 'power4.out', stagger: 0.06,
-          clearProps: 'transform,opacity' }, 0.12);
-      return tl;
-    }
-
     function activate(next) {
       if (next === current || next < 0 || next >= count) return;
 
@@ -354,16 +412,16 @@
       incoming.classList.add('is-active');
 
       clearTimeout(settleTimer);
-      settleTimer = setTimeout(settle, 1600);
+      settleTimer = setTimeout(settle, 1800);
 
       gsap.to(outgoing, { opacity: 0, duration: 0.4, ease: 'power2.out' });
       gsap.fromTo(incoming, { opacity: 0 },
         { opacity: 1, duration: 0.55, ease: 'power2.out', onComplete: settle });
-      reveal(incoming, 0);
+      reveal(incoming);
     }
 
     /* -- scroll drives the index ---------------------------------------- */
-    // While a rail press is flying the page to another slice, the drinks it
+    // While a rail press is flying the page to another slice, the panels it
     // passes over must not flicker past: one press is one move.
     var jumping = 0;
 
@@ -382,21 +440,21 @@
       onUpdate: function (self) { sync(self.progress); },
       // Every lazy image that lands below the fold fires a refresh, which moves
       // the track's start and end without firing onUpdate. Without this the
-      // drink on stage stops matching the scroll position for the rest of the
+      // panel on stage stops matching the scroll position for the rest of the
       // session.
       onRefresh: function (self) { sync(self.progress); }
     });
 
-    // The first drink gets its entrance the moment the stage arrives, so the
+    // The first panel gets its entrance the moment the stage arrives, so the
     // section opens with the same move that carries every later swap.
     var intro = ScrollTrigger.create({
       trigger: stage,
       start: 'top 78%',
       once: true,
-      onEnter: function () { if (current === 0) reveal(items[0], 0); }
+      onEnter: function () { if (current === 0) reveal(items[0]); }
     });
 
-    /* -- pressing a number is a request to see that drink --------------- */
+    /* -- pressing a number is a request to see that panel --------------- */
     function scrollToIndex(i) {
       var travel = seq.end - seq.start;
       if (!(travel > 0)) return;
@@ -515,7 +573,7 @@
       cleanups.push(function () { if (lenis) { lenis.destroy(); lenis = null; } });
     }
 
-    initSignature();
+    initSequences();
 
     /* -- ground colour follows the photography -- */
     var themed = gsap.utils.toArray('[data-theme]');
@@ -776,7 +834,7 @@
 
     // The signature sequence needs ScrollTrigger and Lenis, so it is built
     // inside initMotion. Without GSAP it never enhances at all.
-    if (!hasGSAP) demoteSignature();
+    if (!hasGSAP) document.querySelectorAll('[data-sequence]').forEach(demoteSequence);
 
     // has-motion is applied inside initMotion, not here: rAF never fires in a
     // background tab, so a page opened in one would sit hiding its own content

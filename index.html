@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202609231205">
+<link rel="stylesheet" href="assets/css/style.css?v=202609231520">
 <!--
   Motiq — independent design concept, built 2026.
   Media provenance: all photography and the hero video are exports from the
@@ -172,20 +172,20 @@
       <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.1">A layer of silky cream set over espresso or matcha, dusted and left to melt down through the glass. It is the house idea, and one of the drinks carries the house name.</p>
     </header>
 
-    <div class="signature" data-signature>
-      <div class="signature__stage" data-sig-stage>
+    <div class="seq seq--signature" data-sequence data-seq-reveal="crossfade">
+      <div class="seq__stage">
 
-        <div class="signature__panels">
+        <div class="seq__panels">
 
-          <article class="sig-item is-active" id="sigPanel1" role="tabpanel" aria-labelledby="sigTab1">
-            <div class="sig-item__text">
+          <article class="seq__item sig-item is-active" id="sigPanel1" role="tabpanel" aria-labelledby="sigTab1">
+            <div class="seq__text sig-item__text">
               <span class="sig-item__num" aria-hidden="true">01</span>
               <p class="sig-item__index"><span>01</span> &mdash; 03</p>
               <h3 class="sig-item__name">Motiq Cream Top</h3>
               <p class="sig-item__desc">A smooth vanilla bean latte finished with our signature cream top. 12oz, iced only.</p>
               <p class="sig-item__price">$6.75</p>
             </div>
-            <figure class="sig-item__media">
+            <figure class="seq__media sig-item__media">
               <img src="images/creamtop/signature-motiq-cream-top-820.jpg"
                    srcset="images/creamtop/signature-motiq-cream-top-540.jpg 540w, images/creamtop/signature-motiq-cream-top-820.jpg 820w, images/creamtop/signature-motiq-cream-top-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -193,15 +193,15 @@
             </figure>
           </article>
 
-          <article class="sig-item" id="sigPanel2" role="tabpanel" aria-labelledby="sigTab2">
-            <div class="sig-item__text">
+          <article class="seq__item sig-item" id="sigPanel2" role="tabpanel" aria-labelledby="sigTab2">
+            <div class="seq__text sig-item__text">
               <span class="sig-item__num" aria-hidden="true">02</span>
               <p class="sig-item__index"><span>02</span> &mdash; 03</p>
               <h3 class="sig-item__name">Orange Zest Cream Top</h3>
               <p class="sig-item__desc">Iced americano with a silky white cream top, orange zest and cocoa powder. The cream melts into a velvety finish. Iced only.</p>
               <p class="sig-item__price">$6.50</p>
             </div>
-            <figure class="sig-item__media">
+            <figure class="seq__media sig-item__media">
               <img src="images/creamtop/signature-orange-zest-820.jpg"
                    srcset="images/creamtop/signature-orange-zest-540.jpg 540w, images/creamtop/signature-orange-zest-820.jpg 820w, images/creamtop/signature-orange-zest-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -209,15 +209,15 @@
             </figure>
           </article>
 
-          <article class="sig-item" id="sigPanel3" role="tabpanel" aria-labelledby="sigTab3">
-            <div class="sig-item__text">
+          <article class="seq__item sig-item" id="sigPanel3" role="tabpanel" aria-labelledby="sigTab3">
+            <div class="seq__text sig-item__text">
               <span class="sig-item__num" aria-hidden="true">03</span>
               <p class="sig-item__index"><span>03</span> &mdash; 03</p>
               <h3 class="sig-item__name">Misugaru Latte</h3>
               <p class="sig-item__desc">Multi-grain mix with double espresso, topped with white cream and finished with a sprinkle of sesame powder. Iced only.</p>
               <p class="sig-item__price">$7.00</p>
             </div>
-            <figure class="sig-item__media">
+            <figure class="seq__media sig-item__media">
               <img src="images/creamtop/signature-misugaru-820.jpg"
                    srcset="images/creamtop/signature-misugaru-540.jpg 540w, images/creamtop/signature-misugaru-820.jpg 820w, images/creamtop/signature-misugaru-1100.jpg 1100w"
                    sizes="(max-width: 899px) 68vw, 34vw"
@@ -227,23 +227,23 @@
 
         </div>
 
-        <div class="signature__foot">
-          <div class="signature__rail" role="tablist" aria-label="Signature drinks">
-            <span class="signature__indicator" aria-hidden="true"></span>
-            <button class="sig-tab is-active" id="sigTab1" type="button" role="tab" aria-selected="true" aria-controls="sigPanel1" tabindex="0">
-              <span class="sig-tab__num" aria-hidden="true">01</span>
-              <span class="sig-tab__label">Motiq Cream Top</span>
+        <div class="seq__foot">
+          <div class="seq__rail" role="tablist" aria-label="Signature drinks">
+            <span class="seq__indicator" aria-hidden="true"></span>
+            <button class="seq-tab is-active" id="sigTab1" type="button" role="tab" aria-selected="true" aria-controls="sigPanel1" tabindex="0">
+              <span class="seq-tab__num" aria-hidden="true">01</span>
+              <span class="seq-tab__label">Motiq Cream Top</span>
             </button>
-            <button class="sig-tab" id="sigTab2" type="button" role="tab" aria-selected="false" aria-controls="sigPanel2" tabindex="-1">
-              <span class="sig-tab__num" aria-hidden="true">02</span>
-              <span class="sig-tab__label">Orange Zest Cream Top</span>
+            <button class="seq-tab" id="sigTab2" type="button" role="tab" aria-selected="false" aria-controls="sigPanel2" tabindex="-1">
+              <span class="seq-tab__num" aria-hidden="true">02</span>
+              <span class="seq-tab__label">Orange Zest Cream Top</span>
             </button>
-            <button class="sig-tab" id="sigTab3" type="button" role="tab" aria-selected="false" aria-controls="sigPanel3" tabindex="-1">
-              <span class="sig-tab__num" aria-hidden="true">03</span>
-              <span class="sig-tab__label">Misugaru Latte</span>
+            <button class="seq-tab" id="sigTab3" type="button" role="tab" aria-selected="false" aria-controls="sigPanel3" tabindex="-1">
+              <span class="seq-tab__num" aria-hidden="true">03</span>
+              <span class="seq-tab__label">Misugaru Latte</span>
             </button>
           </div>
-          <a class="signature__cta" href="https://cash.app/order/$motiqlosangeles" target="_blank" rel="noopener">Order online <span aria-hidden="true">&#8599;</span></a>
+          <a class="seq__cta" href="https://cash.app/order/$motiqlosangeles" target="_blank" rel="noopener">Order online <span aria-hidden="true">&#8599;</span></a>
         </div>
 
       </div>
@@ -273,45 +273,79 @@
       <p class="chapter__lede" data-reveal="fade-up" data-reveal-delay="0.1">Origin, roast and process, published the way a roastery would. Pick the one that suits the cup you are after.</p>
     </header>
 
-    <div class="beans" data-soft-reveal>
-      <article class="bean" data-soft-item>
-        <p class="bean__label">Signature espresso</p>
-        <h3 class="bean__name">01 Bright</h3>
-        <dl class="bean__spec">
-          <div><dt>Notes</dt><dd>Milk chocolate &middot; Golden caramel &middot; Brown sugar &middot; Sweet citrus</dd></div>
-          <div><dt>Origin</dt><dd>Brazil / Colombia</dd></div>
-          <div><dt>Roast</dt><dd>Medium</dd></div>
-          <div><dt>Process</dt><dd>Colombia washed / Brazil natural</dd></div>
-        </dl>
-        <p class="bean__triad">Balanced &middot; Sweet &middot; Bright</p>
-      </article>
+    <div class="seq seq--beans" data-sequence data-seq-reveal="focus">
+      <div class="seq__stage">
 
-      <figure class="bean__media" data-soft-item data-parallax-section>
-        <img src="images/espresso/espresso-extraction-portafilter-1000.jpg"
-             srcset="images/espresso/espresso-extraction-portafilter-600.jpg 600w, images/espresso/espresso-extraction-portafilter-1000.jpg 1000w"
-             sizes="(max-width: 860px) 100vw, 32vw"
-             alt="Espresso running from the portafilter into a steel pitcher." loading="lazy" decoding="async" width="1080" height="1440" data-parallax-image>
-      </figure>
+        <div class="seq__panels">
 
-      <article class="bean" data-soft-item>
-        <p class="bean__label">Signature espresso</p>
-        <h3 class="bean__name">02 Bold</h3>
-        <dl class="bean__spec">
-          <div><dt>Notes</dt><dd>Dark cocoa &middot; Caramelized toffee &middot; Roasted hazelnut &middot; Rich molasses</dd></div>
-          <div><dt>Origin</dt><dd>Brazil</dd></div>
-          <div><dt>Roast</dt><dd>Medium dark</dd></div>
-          <div><dt>Process</dt><dd>Brazil natural</dd></div>
-        </dl>
-        <p class="bean__triad">Rich &middot; Deep &middot; Smooth</p>
-      </article>
+          <article class="seq__item beanpanel is-active" id="beanPanel1" role="tabpanel" aria-labelledby="beanTab1">
+            <div class="seq__text beanpanel__text">
+              <p class="bean__label">Signature espresso</p>
+              <h3 class="bean__name">01 Bright</h3>
+              <dl class="bean__spec">
+                <div><dt>Notes</dt><dd>Milk chocolate &middot; Golden caramel &middot; Brown sugar &middot; Sweet citrus</dd></div>
+                <div><dt>Origin</dt><dd>Brazil / Colombia</dd></div>
+                <div><dt>Roast</dt><dd>Medium</dd></div>
+                <div><dt>Process</dt><dd>Colombia washed / Brazil natural</dd></div>
+              </dl>
+              <p class="bean__triad">Balanced &middot; Sweet &middot; Bright</p>
+            </div>
+            <figure class="seq__media beanpanel__media">
+              <span class="seq__sweep" aria-hidden="true"></span>
+              <img src="images/espresso/espresso-shot-ribbed-glass-1000.jpg"
+                   srcset="images/espresso/espresso-shot-ribbed-glass-600.jpg 600w, images/espresso/espresso-shot-ribbed-glass-1000.jpg 1000w"
+                   sizes="(max-width: 899px) 92vw, 48vw"
+                   alt="A single espresso in a ribbed glass, lit from one side on a black surface." loading="lazy" decoding="async" width="1080" height="1440">
+            </figure>
+          </article>
+
+          <article class="seq__item beanpanel" id="beanPanel2" role="tabpanel" aria-labelledby="beanTab2">
+            <div class="seq__text beanpanel__text">
+              <p class="bean__label">Signature espresso</p>
+              <h3 class="bean__name">02 Bold</h3>
+              <dl class="bean__spec">
+                <div><dt>Notes</dt><dd>Dark cocoa &middot; Caramelized toffee &middot; Roasted hazelnut &middot; Rich molasses</dd></div>
+                <div><dt>Origin</dt><dd>Brazil</dd></div>
+                <div><dt>Roast</dt><dd>Medium dark</dd></div>
+                <div><dt>Process</dt><dd>Brazil natural</dd></div>
+              </dl>
+              <p class="bean__triad">Rich &middot; Deep &middot; Smooth</p>
+            </div>
+            <figure class="seq__media beanpanel__media">
+              <span class="seq__sweep" aria-hidden="true"></span>
+              <img src="images/espresso/coffee-beans-kraft-bag-1000.jpg"
+                   srcset="images/espresso/coffee-beans-kraft-bag-600.jpg 600w, images/espresso/coffee-beans-kraft-bag-1000.jpg 1000w"
+                   sizes="(max-width: 899px) 92vw, 48vw"
+                   alt="Roasted coffee beans inside an open kraft paper bag." loading="lazy" decoding="async" width="1080" height="1440">
+            </figure>
+          </article>
+
+        </div>
+
+        <div class="seq__foot">
+          <div class="seq__rail" role="tablist" aria-label="Signature espresso">
+            <span class="seq__indicator" aria-hidden="true"></span>
+            <button class="seq-tab is-active" id="beanTab1" type="button" role="tab" aria-selected="true" aria-controls="beanPanel1" tabindex="0">
+              <span class="seq-tab__num" aria-hidden="true">01</span>
+              <span class="seq-tab__label">01 Bright</span>
+            </button>
+            <button class="seq-tab" id="beanTab2" type="button" role="tab" aria-selected="false" aria-controls="beanPanel2" tabindex="-1">
+              <span class="seq-tab__num" aria-hidden="true">02</span>
+              <span class="seq-tab__label">02 Bold</span>
+            </button>
+          </div>
+          <a class="seq__cta" href="https://cash.app/order/$motiqlosangeles" target="_blank" rel="noopener">Order online <span aria-hidden="true">&#8599;</span></a>
+        </div>
+
+      </div>
     </div>
 
-    <div class="espresso__strip" data-soft-reveal>
-      <figure class="espresso__still" data-soft-item>
-        <img src="images/espresso/espresso-shot-ribbed-glass-1000.jpg"
-             srcset="images/espresso/espresso-shot-ribbed-glass-600.jpg 600w, images/espresso/espresso-shot-ribbed-glass-1000.jpg 1000w"
-             sizes="(max-width: 860px) 50vw, 26vw"
-             alt="A single espresso in a ribbed glass, lit from one side on a black surface." loading="lazy" decoding="async" width="1080" height="1440">
+    <div class="espresso__coffee" data-soft-reveal>
+      <figure class="espresso__still" data-soft-item data-parallax-section>
+        <img src="images/espresso/espresso-extraction-portafilter-1000.jpg"
+             srcset="images/espresso/espresso-extraction-portafilter-600.jpg 600w, images/espresso/espresso-extraction-portafilter-1000.jpg 1000w"
+             sizes="(max-width: 899px) 100vw, 30vw"
+             alt="Espresso running from the portafilter into a steel pitcher." loading="lazy" decoding="async" width="1080" height="1440" data-parallax-image>
       </figure>
       <div class="menu menu--bare" data-soft-item>
         <p class="menu__cat">Coffee</p>
@@ -324,12 +358,6 @@
           <li class="menu__item menu__item--row"><div class="menu__row"><h3>Honey Oat Latte <em>oat milk only</em></h3><span class="menu__dots" aria-hidden="true"></span><span class="menu__price">$6.75</span></div></li>
         </ul>
       </div>
-      <figure class="espresso__still" data-soft-item>
-        <img src="images/espresso/coffee-beans-kraft-bag-1000.jpg"
-             srcset="images/espresso/coffee-beans-kraft-bag-600.jpg 600w, images/espresso/coffee-beans-kraft-bag-1000.jpg 1000w"
-             sizes="(max-width: 860px) 50vw, 26vw"
-             alt="Roasted coffee beans inside an open kraft paper bag." loading="lazy" decoding="async" width="1080" height="1440">
-      </figure>
     </div>
   </section>
 
@@ -652,6 +680,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js" defer></script>
-<script src="assets/js/main.js?v=202609231205" defer></script>
+<script src="assets/js/main.js?v=202609231520" defer></script>
 </body>
 </html>
